@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reappraise — French property investment appraisal</title>
+<meta name="description" content="A single-file appraisal sheet for French residential property: acquisition, renovation, resale and hold, with French tax treatment and a due-diligence checklist.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#E8ECEE; --sheet:#FDFDFC; --sheet-2:#F2F5F6; --sheet-3:#E9EEF0;
+  --ink:#14181B; --ink-2:#4C575E; --ink-3:#7B878E;
+  --rule:#CFD8DC; --rule-2:#E4EAEC;
+  --blue:#1B4F9C; --red:#C22B26; --green:#1E8F52; --amber:#9C6A00;
+  --blue-tint:rgba(27,79,156,.09); --red-tint:rgba(194,43,38,.10);
+  --green-tint:rgba(30,143,82,.10); --amber-tint:rgba(156,106,0,.12);
+  --s1:#A9C4E8; --s2:#6E9BD4; --s3:#3D71B4; --s4:#1B4F9C;
+  --shadow:0 1px 2px rgba(20,24,27,.05), 0 8px 24px -14px rgba(20,24,27,.22);
+  --grid:rgba(20,24,27,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --paper:#0D1113; --sheet:#161D20; --sheet-2:#1C2529; --sheet-3:#222C31;
+    --ink:#E9EEF0; --ink-2:#A4B1B7; --ink-3:#74838A;
+    --rule:#2A3539; --rule-2:#212B2F;
+    --blue:#5F9BEA; --red:#EE6A61; --green:#3FBE77; --amber:#D9A03A;
+    --blue-tint:rgba(95,155,234,.14); --red-tint:rgba(238,106,97,.14);
+    --green-tint:rgba(63,190,119,.13); --amber-tint:rgba(217,160,58,.14);
+    --s1:#2B4E7D; --s2:#3A6FB0; --s3:#558FD4; --s4:#86B4E8;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.7);
+    --grid:rgba(233,238,240,.09);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#0D1113; --sheet:#161D20; --sheet-2:#1C2529; --sheet-3:#222C31;
+  --ink:#E9EEF0; --ink-2:#A4B1B7; --ink-3:#74838A;
+  --rule:#2A3539; --rule-2:#212B2F;
+  --blue:#5F9BEA; --red:#EE6A61; --green:#3FBE77; --amber:#D9A03A;
+  --blue-tint:rgba(95,155,234,.14); --red-tint:rgba(238,106,97,.14);
+  --green-tint:rgba(63,190,119,.13); --amber-tint:rgba(217,160,58,.14);
+  --s1:#2B4E7D; --s2:#3A6FB0; --s3:#558FD4; --s4:#86B4E8;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.7);
+  --grid:rgba(233,238,240,.09);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size:14.5px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.lab{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size:10.5px; font-weight:500; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3)}
+.num{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums}
+
+/* ---------- toolbar ---------- */
+.bar{
+  position:sticky; top:0; z-index:30; background:var(--sheet);
+  border-bottom:1px solid var(--rule); box-shadow:var(--shadow);
+}
+.bar-in{max-width:1560px; margin:0 auto; padding:9px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+.brand{font-family:"IBM Plex Serif", Georgia, serif; font-weight:600; font-size:18px; letter-spacing:-.01em; margin-right:4px}
+.brand small{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); font-weight:500; display:block; margin-top:-2px}
+.spacer{flex:1 1 auto}
+button, select, input[type=text], input[type=number]{font:inherit; color:inherit}
+.btn{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  background:var(--sheet-2); border:1px solid var(--rule); color:var(--ink-2);
+  padding:6px 10px; border-radius:2px; cursor:pointer; white-space:nowrap;
+}
+.btn:hover{border-color:var(--blue); color:var(--blue)}
+.btn:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.btn.pri{background:var(--blue); border-color:var(--blue); color:#fff}
+.btn.pri:hover{filter:brightness(1.08); color:#fff}
+.btn.danger:hover{border-color:var(--red); color:var(--red)}
+.seg{display:inline-flex; border:1px solid var(--rule); border-radius:2px; overflow:hidden}
+.seg button{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  background:var(--sheet-2); border:none; color:var(--ink-3); padding:6px 12px; cursor:pointer;
+}
+.seg button + button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed=true]{background:var(--blue); color:#fff}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1560px; margin:0 auto; padding:16px}
+.app{display:grid; grid-template-columns:236px minmax(0,1fr); gap:16px; align-items:start}
+@media (max-width:1080px){ .app{grid-template-columns:1fr} }
+.cols{display:grid; grid-template-columns:minmax(0,352px) minmax(0,1fr); gap:16px; align-items:start}
+@media (max-width:1080px){ .cols{grid-template-columns:1fr} }
+.stack{display:flex; flex-direction:column; gap:16px; min-width:0}
+
+.card{background:var(--sheet); border:1px solid var(--rule); border-radius:3px; box-shadow:var(--shadow); min-width:0}
+.card-hd{display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 14px; border-bottom:1px solid var(--rule); background:var(--sheet-2)}
+.card-hd h2{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; margin:0; color:var(--ink)}
+.card-bd{padding:14px}
+
+/* ---------- property list ---------- */
+.plist{display:flex; flex-direction:column}
+.pitem{
+  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center;
+  padding:9px 12px; border-top:1px solid var(--rule-2); cursor:pointer; background:none; border-left:none; border-right:none; border-bottom:none;
+  text-align:left; width:100%; font:inherit; color:inherit;
+}
+.pitem:first-child{border-top:none}
+.pitem:hover{background:var(--sheet-2)}
+.pitem[aria-current=true]{background:var(--blue-tint); box-shadow:inset 2px 0 0 var(--blue)}
+.pitem > span:first-child{display:flex; flex-direction:column; min-width:0}
+.pitem .pn{display:block; font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.pitem .ps{display:block; font-size:11px; color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+/* ---------- KPI strip ---------- */
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(128px,1fr))}
+.kpi .lab{white-space:nowrap}
+.kpi{padding:11px 14px; border-right:1px solid var(--rule-2); min-width:0}
+.kpi:last-child{border-right:none}
+.kpi .v{font-family:"IBM Plex Mono",monospace; font-size:17px; font-weight:600;
+  font-variant-numeric:tabular-nums; display:block; margin-top:2px; letter-spacing:-.01em}
+.verdict{
+  display:flex; align-items:center; gap:12px; padding:14px; border-bottom:1px solid var(--rule); flex-wrap:wrap;
+}
+.vflag{
+  font-family:"IBM Plex Serif",Georgia,serif; font-weight:600; font-size:23px; letter-spacing:-.01em;
+  padding:4px 13px 6px; border-radius:2px; border:1px solid; white-space:nowrap;
+}
+.v-go{color:var(--green); background:var(--green-tint); border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.v-cond{color:var(--amber); background:var(--amber-tint); border-color:color-mix(in srgb,var(--amber) 40%,transparent)}
+.v-no{color:var(--red); background:var(--red-tint); border-color:color-mix(in srgb,var(--red) 40%,transparent)}
+.verdict p{margin:0; font-size:13px; color:var(--ink-2); flex:1 1 320px; min-width:0}
+
+/* ---------- fields ---------- */
+.fgroup + .fgroup{border-top:1px solid var(--rule); margin-top:10px; padding-top:4px}
+.fgroup > .lab{display:block; padding:8px 0 4px}
+.f{display:grid; grid-template-columns:minmax(0,1fr) 116px; gap:8px; align-items:center; padding:4px 0}
+.f > label{font-size:12.5px; color:var(--ink-2)}
+.f .u{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3); letter-spacing:.06em}
+.f input[type=text], .f input[type=number], .f select{
+  width:100%; background:var(--sheet-2); border:1px solid var(--rule); border-radius:2px;
+  padding:5px 7px; font-family:"IBM Plex Mono",monospace; font-size:13px;
+  font-variant-numeric:tabular-nums; text-align:right;
+}
+.f select, .f input[type=text]{text-align:left; font-family:"IBM Plex Sans",sans-serif; font-size:12.5px}
+.f.wide{grid-template-columns:1fr}
+.f.wide select{text-align:left}
+.f input:focus, .f select:focus{outline:2px solid var(--blue); outline-offset:-1px; border-color:var(--blue)}
+.f .note{grid-column:1/-1; font-size:11.5px; color:var(--ink-3); line-height:1.4; padding-bottom:3px}
+.f.key > label{color:var(--ink); font-weight:600}
+.f input[type=checkbox]{width:16px; height:16px; accent-color:var(--blue); justify-self:end}
+.sl{grid-column:1/-1; padding:1px 0 4px}
+input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:16px; background:transparent; margin:0; cursor:ew-resize}
+input[type=range]::-webkit-slider-runnable-track{height:2px; background:var(--rule); border-radius:2px}
+input[type=range]::-moz-range-track{height:2px; background:var(--rule); border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:12px; height:12px; margin-top:-5px;
+  border-radius:50%; background:var(--blue); border:2px solid var(--sheet); box-shadow:0 0 0 1px var(--blue)}
+input[type=range]::-moz-range-thumb{width:12px; height:12px; border-radius:50%; background:var(--blue);
+  border:2px solid var(--sheet); box-shadow:0 0 0 1px var(--blue)}
+input[type=range]:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
+
+/* ---------- results ---------- */
+.two{display:grid; grid-template-columns:1fr 1fr}
+@media (max-width:760px){ .two{grid-template-columns:1fr} }
+.two > div{padding:14px; min-width:0}
+.two > div:first-child{border-right:1px solid var(--rule)}
+@media (max-width:760px){ .two > div:first-child{border-right:none; border-bottom:1px solid var(--rule)} }
+.two h3{font-family:"IBM Plex Serif",Georgia,serif; font-size:16px; font-weight:600; margin:3px 0 1px}
+.two .sub{font-size:11.5px; color:var(--ink-3); margin:0 0 11px}
+.hero{display:flex; align-items:baseline; gap:8px; margin:2px 0 11px; flex-wrap:wrap}
+.hero .big{font-family:"IBM Plex Mono",monospace; font-size:28px; font-weight:600;
+  font-variant-numeric:tabular-nums; letter-spacing:-.02em; line-height:1}
+.hero .unit{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3);
+  letter-spacing:.06em; text-transform:uppercase}
+.rows{display:flex; flex-direction:column}
+.row{display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  padding:5px 0; border-top:1px dotted var(--rule); font-size:12.8px}
+.row:first-child{border-top:none}
+.row > span:first-child{color:var(--ink-2)}
+.row > span:last-child{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+  font-weight:500; text-align:right; white-space:nowrap}
+.row.sum > span{font-weight:600; color:var(--ink)}
+.pos{color:var(--green)} .neg{color:var(--red)} .warn{color:var(--amber)}
+.chip{display:inline-flex; align-items:center; gap:5px; font-family:"IBM Plex Mono",monospace;
+  font-size:9.5px; letter-spacing:.11em; text-transform:uppercase; font-weight:500;
+  padding:3px 7px; border-radius:2px; border:1px solid; white-space:nowrap}
+.chip-go{color:var(--green); background:var(--green-tint); border-color:color-mix(in srgb,var(--green) 35%,transparent)}
+.chip-warn{color:var(--amber); background:var(--amber-tint); border-color:color-mix(in srgb,var(--amber) 35%,transparent)}
+.chip-no{color:var(--red); background:var(--red-tint); border-color:color-mix(in srgb,var(--red) 35%,transparent)}
+.chip-off{color:var(--ink-3); background:var(--sheet-2); border-color:var(--rule)}
+
+/* ---------- charts ---------- */
+.chartbox{position:relative; width:100%; overflow-x:auto}
+svg{display:block; width:100%; height:auto}
+.tt{position:absolute; pointer-events:none; opacity:0; transition:opacity .1s; background:var(--sheet);
+  border:1px solid var(--rule); border-radius:3px; box-shadow:var(--shadow); padding:8px 10px;
+  font-size:12px; min-width:150px; z-index:5}
+.tt-h{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.06em; color:var(--ink-3); margin-bottom:4px}
+.tt-r{display:flex; justify-content:space-between; gap:14px}
+.tt-r b{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:600}
+.legend{display:flex; flex-wrap:wrap; gap:5px 15px; margin-top:11px; font-size:12px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.swatch{width:11px; height:11px; border-radius:2px; flex:none}
+
+/* ---------- tables ---------- */
+.tbl-scroll{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:12.8px}
+th,td{text-align:left; padding:6px 9px; border-bottom:1px solid var(--rule-2)}
+th{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:500; border-bottom:1px solid var(--rule); white-space:nowrap}
+td.n, th.n{text-align:right; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}
+tfoot td{border-top:1px solid var(--rule); font-weight:600;
+  font-family:"IBM Plex Mono",monospace; border-bottom:none}
+tfoot td:first-child{font-family:"IBM Plex Sans",sans-serif}
+table input{width:100%; background:var(--sheet-2); border:1px solid var(--rule); border-radius:2px;
+  padding:4px 6px; font-family:"IBM Plex Mono",monospace; font-size:12.5px; text-align:right; font-variant-numeric:tabular-nums}
+table input[type=text]{text-align:left; font-family:"IBM Plex Sans",sans-serif}
+table input:focus{outline:2px solid var(--blue); outline-offset:-1px}
+.xbtn{background:none; border:1px solid var(--rule); color:var(--ink-3); border-radius:2px;
+  width:22px; height:22px; line-height:1; cursor:pointer; font-size:13px}
+.xbtn:hover{border-color:var(--red); color:var(--red)}
+tr.cmp-cur td{background:var(--blue-tint)}
+
+/* ---------- checklist ---------- */
+.ck-grp{border-top:1px solid var(--rule)}
+.ck-grp:first-child{border-top:none}
+.ck-grp > .lab{display:block; padding:10px 14px 4px; background:var(--sheet-2)}
+.ck{display:grid; grid-template-columns:22px minmax(0,1fr) 78px; gap:9px; align-items:start;
+  padding:6px 14px; border-top:1px solid var(--rule-2); font-size:13px}
+.ck input[type=checkbox]{width:15px; height:15px; margin:3px 0 0; accent-color:var(--green)}
+.ck label{cursor:pointer}
+.ck .why{display:block; font-size:11.5px; color:var(--ink-3); line-height:1.4}
+.ck.done label{color:var(--ink-3); text-decoration:line-through; text-decoration-color:var(--rule)}
+.meter{height:5px; background:var(--rule-2); border-radius:3px; overflow:hidden; flex:1 1 120px; min-width:90px}
+.meter i{display:block; height:100%; background:var(--green); border-radius:3px}
+
+.foot{max-width:1560px; margin:0 auto; padding:6px 16px 56px; font-size:12.5px; color:var(--ink-3); line-height:1.6}
+.foot a{color:var(--blue); text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--blue) 35%,transparent)}
+.foot p{max-width:84ch}
+.hide{display:none !important}
+@media (prefers-reduced-motion:reduce){ *{transition:none !important; animation:none !important} }
+@media print{ .bar,.card-hd .btn{display:none} .card{box-shadow:none; break-inside:avoid} }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="brand">Reappraise<small>French property · investment sheet</small></div>
+    <div class="seg" role="group" aria-label="View">
+      <button type="button" id="tabSheet" aria-pressed="true">Sheet</button>
+      <button type="button" id="tabCompare" aria-pressed="false">Compare</button>
+    </div>
+    <span class="spacer"></span>
+    <button class="btn pri" type="button" id="bNew">+ Property</button>
+    <button class="btn" type="button" id="bDup">Duplicate</button>
+    <button class="btn danger" type="button" id="bDel">Delete</button>
+    <button class="btn" type="button" id="bExport">Export JSON</button>
+    <button class="btn" type="button" id="bImport">Import JSON</button>
+    <button class="btn" type="button" id="bCsv">Export CSV</button>
+    <button class="btn" type="button" id="bTheme" title="Toggle theme">Theme</button>
+    <input type="file" id="fileIn" accept="application/json,.json" class="hide">
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="app">
+
+    <div class="stack">
+      <section class="card">
+        <div class="card-hd"><h2>Portfolio</h2><span class="lab" id="pcount">—</span></div>
+        <div class="plist" id="plist"></div>
+      </section>
+      <section class="card">
+        <div class="card-hd"><h2>Reset</h2></div>
+        <div class="card-bd" style="display:flex; flex-direction:column; gap:8px">
+          <button class="btn" type="button" id="bSeed">Load Nantes example</button>
+          <button class="btn danger" type="button" id="bWipe">Clear all saved data</button>
+          <p class="lab" style="letter-spacing:.06em; text-transform:none; line-height:1.5">
+            Everything is stored in this browser only. Nothing is uploaded anywhere.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ SHEET VIEW ============ -->
+    <div class="stack" id="viewSheet">
+
+      <section class="card">
+        <div class="verdict">
+          <span class="vflag v-go" id="vflag">—</span>
+          <p id="vtext">—</p>
+        </div>
+        <div class="kpis" id="kpis"></div>
+      </section>
+
+      <div class="cols">
+        <div class="stack">
+          <section class="card">
+            <div class="card-hd"><h2>Inputs</h2><span class="lab">France</span></div>
+            <div class="card-bd" id="form"></div>
+          </section>
+        </div>
+
+        <div class="stack">
+          <section class="card">
+            <div class="card-hd">
+              <h2>Sensitivity</h2>
+              <label class="lab" style="display:flex; gap:7px; align-items:center">Driver
+                <select id="driver" style="background:var(--sheet); border:1px solid var(--rule); border-radius:2px; padding:3px 5px; font-family:'IBM Plex Sans',sans-serif; font-size:12px; letter-spacing:normal; text-transform:none; color:var(--ink)"></select>
+              </label>
+            </div>
+            <div class="card-bd">
+              <div class="chartbox" id="sensbox">
+                <svg id="sens" viewBox="0 0 880 320" role="img" aria-labelledby="sens-t"></svg>
+                <div class="tt" id="sens-tt"></div>
+              </div>
+              <div class="legend" id="sens-legend"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-hd"><h2>Two exits</h2><span class="lab" id="regimeLab">—</span></div>
+            <div class="two">
+              <div>
+                <span class="lab">Exit A</span>
+                <h3>Renovate &amp; sell</h3>
+                <p class="sub" id="aSub">—</p>
+                <div class="hero"><span class="big" id="a_profit">—</span><span class="unit">after tax</span><span class="chip" id="a_chip">—</span></div>
+                <div class="rows" id="aRows"></div>
+              </div>
+              <div>
+                <span class="lab">Exit B</span>
+                <h3>Renovate &amp; hold</h3>
+                <p class="sub">Units let, financed at the same leverage</p>
+                <div class="hero"><span class="big" id="b_cf">—</span><span class="unit">cash flow / yr</span><span class="chip" id="b_chip">—</span></div>
+                <div class="rows" id="bRows"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-hd"><h2>Where the money goes</h2><span class="lab">sources &amp; uses</span></div>
+            <div class="card-bd">
+              <div class="chartbox" id="stackbox">
+                <svg id="stack" viewBox="0 0 880 232" role="img" aria-labelledby="stack-t"></svg>
+              </div>
+              <div class="legend" id="stack-legend"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-hd"><h2>Unit schedule</h2><button class="btn" type="button" id="bAddUnit">+ Unit</button></div>
+            <div class="card-bd" style="padding-bottom:8px">
+              <div class="tbl-scroll">
+                <table>
+                  <thead><tr><th>Unit</th><th class="n">m²</th><th class="n">Rent €/m²</th><th class="n">Rent €/mo</th><th>Flag</th><th></th></tr></thead>
+                  <tbody id="units"></tbody>
+                  <tfoot><tr><td>Total</td><td class="n" id="u_area">—</td><td class="n" id="u_psm">—</td><td class="n" id="u_rent">—</td><td colspan="2" id="u_check" class="lab" style="letter-spacing:.06em; text-transform:none">—</td></tr></tfoot>
+                </table>
+              </div>
+              <p class="lab" style="letter-spacing:.05em; text-transform:none; line-height:1.5; padding:8px 0 2px">
+                Unit rents drive Exit B. A unit under 9 m² is flagged: French <em>décence</em> rules do not
+                accept it as a lettable room, and in a colocation the rule applies per tenant.
+              </p>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-hd"><h2>Due diligence</h2>
+              <span style="display:flex; align-items:center; gap:9px; flex:0 1 200px">
+                <span class="meter"><i id="ckbar" style="width:0%"></i></span>
+                <span class="lab" id="ckpct">0 %</span>
+              </span>
+            </div>
+            <div id="checklist"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ COMPARE VIEW ============ -->
+    <div class="stack hide" id="viewCompare">
+      <section class="card">
+        <div class="card-hd"><h2>Comparison</h2><span class="lab">click a row to open it</span></div>
+        <div class="card-bd" style="padding:0">
+          <div class="tbl-scroll">
+            <table id="cmp">
+              <thead><tr>
+                <th>Property</th><th class="n">m²</th><th class="n">Price</th><th class="n">Cost €/m²</th>
+                <th class="n">Exit €/m²</th><th class="n">Profit a/tax</th><th class="n">Margin</th>
+                <th class="n">Breakeven build</th><th class="n">Stressed margin</th>
+                <th class="n">Yield</th><th class="n">DSCR</th><th class="n">DD</th><th>Verdict</th>
+              </tr></thead>
+              <tbody id="cmpb"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
+
+<div class="foot">
+  <p><strong>Method.</strong> <em>Frais de notaire</em> are computed on the vendor price — buyer-borne agency fees are
+  excluded from the DMTO base, which is the correct treatment when the fee is <em>à la charge de l'acquéreur</em>.
+  Works are quoted HT, grossed up by contingency then soft costs, and TVA is applied at the rate selected.
+  Debt is sized on total project cost; build-period interest assumes the average drawdown shown.
+  Exit A prices the loi-Carrez area, not the habitable area. Plus-value abattements follow the statutory schedule
+  (IR exempt at 22 years, prélèvements sociaux at 30); the surtaxe uses the simplified bracket table.
+  <em>Marchand de biens</em> is taxed at IS 15 % to 42 500 € then 25 %. TVA sur marge is charged on the
+  sale-minus-acquisition margin; the full-price option recovers input TVA on the works.</p>
+  <p><strong>This is a modelling tool, not advice.</strong> It will not tell you whether a division defeats
+  TVA sur marge, whether your works cross the <em>immeuble neuf</em> threshold, or whether a flip gets requalified
+  as BIC. Those need a notaire and a fiscaliste. Rates and thresholds are hard-coded as of September 2026 —
+  check them before you rely on a number.</p>
+  <p>MIT licensed. Single file, no dependencies, no network calls, no analytics. Your data stays in your browser.</p>
+</div>
+
+<script>
+"use strict";
+(function(){
+
+/* ==================== constants ==================== */
+var LS = "reappraise.v1";
+var DMTO = [[5.80665,"5.80665 % — standard départements"],[6.32,"6.32 % — département at the 5.00 % cap"],[0.715,"0.715 % — marchand de biens, 5-yr resale commitment"]];
+var TVA_W = [[0,"0 % — no works TVA"],[5.5,"5,5 % — energy renovation"],[10,"10 % — improvement, dwelling > 2 yrs"],[20,"20 % — immeuble neuf / floor area +10 %"]];
+var REGIMES = [["none","Pre-tax only"],["private","Private individual — plus-value"],["mdb","Marchand de biens / SCI à l'IS"]];
+var TVA_R = [["none","None — private resale"],["marge","TVA sur marge, 20 %"],["full","20 % on full price, input TVA recovered"]];
+
+var FIELDS = [
+ {g:"Property", items:[
+   {k:"name", t:"text", l:"Name"},
+   {k:"address", t:"text", l:"Address"},
+   {k:"surface", t:"num", l:"Habitable surface", u:"m²", step:1},
+   {k:"carrezArea", t:"num", l:"Sellable (loi Carrez) area", u:"m²", step:1,
+    note:"Floor under a 1,80 m ceiling does not count. Exit A prices this, not the habitable surface."},
+   {k:"landArea", t:"num", l:"Land", u:"m²", step:10},
+   {k:"yearBuilt", t:"num", l:"Year built", step:1,
+    note:"Before 1949 triggers CREP (lead); before 1997, asbestos."}
+ ]},
+ {g:"Acquisition", items:[
+   {k:"priceAllIn", t:"num", l:"Price, all-in", u:"€", step:1000},
+   {k:"agencyPct", t:"num", l:"Agency fee", u:"%", step:0.01},
+   {k:"agencyOnBuyer", t:"bool", l:"Agency fee borne by buyer"},
+   {k:"dmtoPct", t:"sel", l:"DMTO", opts:DMTO, wide:true},
+   {k:"notaryOtherPct", t:"num", l:"Émoluments + débours + CSI", u:"%", step:0.05},
+   {k:"acqExtra", t:"num", l:"Other acquisition costs", u:"€", step:500}
+ ]},
+ {g:"Renovation", items:[
+   {k:"renoPsm", t:"num", l:"Works", u:"€/m² HT", step:25, key:true, min:0, max:3000},
+   {k:"contPct", t:"num", l:"Contingency", u:"%", step:1, min:0, max:40},
+   {k:"softPct", t:"num", l:"Soft costs — MOE, permits, insurance", u:"%", step:0.5, min:0, max:25},
+   {k:"worksExtra", t:"num", l:"Lump sums — structure, drainage, connections", u:"€ HT", step:1000},
+   {k:"worksTvaPct", t:"sel", l:"Works TVA", opts:TVA_W, wide:true},
+   {k:"months", t:"num", l:"Works duration", u:"months", step:1, min:1, max:48},
+   {k:"holdingCosts", t:"num", l:"Holding costs during works", u:"€", step:500}
+ ]},
+ {g:"Financing", items:[
+   {k:"equityPct", t:"num", l:"Equity share", u:"%", step:1, min:5, max:100},
+   {k:"ratePct", t:"num", l:"Interest rate", u:"%", step:0.05, min:0, max:12},
+   {k:"drawPct", t:"num", l:"Average drawdown during works", u:"%", step:5, min:0, max:100},
+   {k:"termYears", t:"num", l:"Loan term — hold case", u:"yrs", step:1, min:5, max:30}
+ ]},
+ {g:"Exit A — sell", items:[
+   {k:"exitPsm", t:"num", l:"Exit price", u:"€/m²", step:25, key:true, min:500, max:12000},
+   {k:"sellCostPct", t:"num", l:"Selling costs", u:"%", step:0.25, min:0, max:12},
+   {k:"sellFixed", t:"num", l:"Copro creation, géomètre, diagnostics", u:"€", step:500},
+   {k:"monthsToSell", t:"num", l:"Sell-out period after works", u:"months", step:1, min:0, max:36}
+ ]},
+ {g:"Exit B — hold", items:[
+   {k:"opexPct", t:"num", l:"Operating cost ratio", u:"%", step:1, min:5, max:60},
+   {k:"vacPct", t:"num", l:"Vacancy & bad debt", u:"%", step:1, min:0, max:35}
+ ]},
+ {g:"Tax & structure", items:[
+   {k:"regime", t:"sel", l:"Regime", opts:REGIMES, wide:true},
+   {k:"tvaMode", t:"sel", l:"TVA on resale", opts:TVA_R, wide:true},
+   {k:"ownYears", t:"num", l:"Years owned at resale", u:"yrs", step:1, min:0, max:35,
+    note:"Drives the plus-value abattement. Under 6 years there is none."}
+ ]},
+ {g:"Hurdles & stress test", items:[
+   {k:"hurdleMargin", t:"num", l:"Minimum margin on cost", u:"%", step:1, min:0, max:60},
+   {k:"hurdleDscr", t:"num", l:"Minimum DSCR", u:"×", step:0.05, min:0.5, max:2.5},
+   {k:"stressReno", t:"num", l:"Stress — works cost", u:"+%", step:5, min:0, max:100},
+   {k:"stressExit", t:"num", l:"Stress — exit price", u:"−%", step:1, min:0, max:40},
+   {k:"stressRate", t:"num", l:"Stress — interest rate", u:"+pt", step:0.25, min:0, max:5}
+ ]}
+];
+
+var CHECKS = [
+ ["Title & rights", [
+  ["t1","Origine de propriété, 30 years","Confirms the vendor can actually sell and reveals old conditions."],
+  ["t2","Servitudes — passage, réseaux, vue, drainage","A pumped-drainage or access easement is a permanent cost and a permanent neighbour."],
+  ["t3","Hypothèques and inscriptions cleared",""],
+  ["t4","Pre-emption rights — DPU, SAFER, sitting tenant","A commune can take the deal after you have spent on due diligence."],
+  ["t5","Occupancy — vacant, or lease terms read","A protected tenant can make a renovation plan undeliverable."],
+  ["t6","Copropriété: règlement, 3 years of PV AG, arrears","Voted-but-unpaid works follow the lot, not the seller."]
+ ]],
+ ["Planning & permits", [
+  ["p1","PLU zoning and règlement checked",""],
+  ["p2","Permis de construire / DP granted and free of appeal","Granted is not final until the appeal window has closed."],
+  ["p3","Autorisation préalable de division held","Many communes require it before you may create dwellings."],
+  ["p4","ABF / site patrimonial remarquable position known","Can dictate windows, roof and render — and the budget."],
+  ["p5","Prior works regularised — DAACT on file","Unpermitted past work becomes your problem on resale."]
+ ]],
+ ["Technical", [
+  ["x1","DPE, or the exemption reason understood","An exemption usually means it is not a functioning dwelling."],
+  ["x2","Asbestos diagnostic (built before 1997)",""],
+  ["x3","CREP / lead (built before 1949)",""],
+  ["x4","Termites and parasitic report",""],
+  ["x5","Electrics and gas diagnostics",""],
+  ["x6","Drainage: connection, gravity or lift pump","A poste de relevage means power, maintenance and shared liability."],
+  ["x7","Structure walked with a builder — roof, frame, footings, damp","The single biggest source of budget overrun in old stone."],
+  ["x8","Loi Carrez / Boutin certificate from a géomètre","This is the area you can legally sell. Assume it is smaller."]
+ ]],
+ ["Money", [
+  ["m1","Taxe foncière — last notice seen",""],
+  ["m2","Two firm contractor tenders, fixed price","An estimate per m² is a wish. A signed marché is a number."],
+  ["m3","Contractors' RC décennale and dommages-ouvrage verified",""],
+  ["m4","Financing offer in principle, works included",""]
+ ]],
+ ["Market", [
+  ["k1","Three comparable sold prices, not asking prices",""],
+  ["k2","Rental comparables for the actual unit sizes","Small units rent at a much higher €/m² — and are capped first."],
+  ["k3","Encadrement des loyers status for the commune checked",""],
+  ["k4","Time on market and absorption for this product",""]
+ ]],
+ ["Tax & structure", [
+  ["f1","Regime decided before the compromis","After signing, the cheap options are gone."],
+  ["f2","Written fiscaliste position on TVA — marge vs full price","Usually the largest single number in the model."],
+  ["f3","BIC requalification risk assessed","Habitual flipping is taxed as a trade whatever the deed says."]
+ ]]
+];
+
+var DRIVERS = [
+ ["renoPsm","Works cost €/m²",[400,2600]],
+ ["exitPsm","Exit price €/m²",[1500,6500]],
+ ["priceAllIn","Purchase price €",null],
+ ["ratePct","Interest rate %",[1,10]],
+ ["months","Works duration, months",[6,42]],
+ ["equityPct","Equity share %",[10,100]]
+];
+
+/* ==================== helpers ==================== */
+function eur(v){
+  if(!isFinite(v)) return "—";
+  var s = Math.round(Math.abs(v)).toString().replace(/\B(?=(\d{3})+(?!\d))/g," ");
+  return (v<0?"−":"") + s + " €";
+}
+function eur0(v){ return isFinite(v) ? (v<0?"−":"") + Math.round(Math.abs(v)).toString().replace(/\B(?=(\d{3})+(?!\d))/g," ") : "—"; }
+function pc(v,d){ return isFinite(v) ? (v*100).toFixed(d===undefined?1:d) + " %" : "—"; }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+function uid(){ return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+/* ==================== defaults & seed ==================== */
+function blank(){
+  return {
+    id: uid(), name:"New property", address:"", surface:100, carrezArea:100, landArea:0, yearBuilt:1970,
+    priceAllIn:200000, agencyPct:0, agencyOnBuyer:true, dmtoPct:5.80665, notaryOtherPct:1.3, acqExtra:0,
+    renoPsm:900, contPct:10, softPct:8, worksExtra:0, worksTvaPct:10, months:12, holdingCosts:0,
+    equityPct:20, ratePct:3.7, drawPct:60, termYears:20,
+    exitPsm:3000, sellCostPct:4, sellFixed:0, monthsToSell:6,
+    opexPct:30, vacPct:6,
+    regime:"none", tvaMode:"none", ownYears:2,
+    hurdleMargin:20, hurdleDscr:1.2, stressReno:25, stressExit:10, stressRate:1,
+    units:[{n:"Whole", a:100, r:14}], checks:{}
+  };
+}
+function nantes(){
+  var p = blank();
+  p.id = uid();
+  p.name = "51 Ville en Pierre";
+  p.address = "51 Rue de la Ville en Pierre, 44000 Nantes";
+  p.surface = 275; p.carrezArea = 275; p.landArea = 720; p.yearBuilt = 1850;
+  p.priceAllIn = 399000; p.agencyPct = 3.09; p.agencyOnBuyer = true;
+  p.dmtoPct = 6.32; p.notaryOtherPct = 1.3;
+  p.renoPsm = 800; p.contPct = 10; p.softPct = 8; p.worksTvaPct = 10; p.months = 18;
+  p.equityPct = 20; p.ratePct = 3.7; p.termYears = 20;
+  p.exitPsm = 3700; p.sellCostPct = 4; p.sellFixed = 8000; p.monthsToSell = 6;
+  p.regime = "mdb"; p.tvaMode = "marge"; p.ownYears = 2;
+  p.units = [
+    {n:"Studio 2", a:20, r:22.5},
+    {n:"Lot T2-a", a:30, r:19.5},
+    {n:"Lot T2-b", a:34, r:18.5},
+    {n:"Coliving", a:57, r:24},
+    {n:"Annexe", a:35, r:18},
+    {n:"Lot T4 (attic)", a:75, r:14},
+    {n:"Annexe 2", a:24, r:17}
+  ];
+  p.checks = {t2:1, x1:1, x8:0};
+  return p;
+}
+
+/* ==================== state ==================== */
+var state = load();
+function load(){
+  try{
+    var raw = localStorage.getItem(LS);
+    if(raw){
+      var s = JSON.parse(raw);
+      if(s && s.props && s.props.length) return s;
+    }
+  }catch(e){}
+  var p = nantes();
+  return {props:[p], cur:p.id, driver:"renoPsm", view:"sheet"};
+}
+function save(){
+  try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){}
+}
+function cur(){
+  var p = state.props.filter(function(x){return x.id===state.cur;})[0];
+  if(!p){ p = state.props[0]; state.cur = p.id; }
+  // fill in any missing keys from blank() so older saves keep working
+  var b = blank();
+  for(var k in b){ if(!(k in p)) p[k] = b[k]; }
+  return p;
+}
+
+/* ==================== the model ==================== */
+function calc(p){
+  var S = Math.max(1, +p.surface || 1);
+  var A = Math.max(1, +p.carrezArea || S);
+
+  // --- acquisition
+  var agBuyer = p.agencyOnBuyer ? (+p.agencyPct||0) : 0;
+  var netVendor = (+p.priceAllIn||0) / (1 + agBuyer/100);
+  var dmto = netVendor * (+p.dmtoPct||0)/100;
+  var notaryOther = netVendor * (+p.notaryOtherPct||0)/100;
+  var notary = dmto + notaryOther;
+  var acq = (+p.priceAllIn||0) + notary + (+p.acqExtra||0);
+
+  // --- works
+  var wBase = (+p.renoPsm||0) * S;
+  var wCont = wBase * (+p.contPct||0)/100;
+  var wSoft = (wBase + wCont) * (+p.softPct||0)/100;
+  var wHT = wBase + wCont + wSoft + (+p.worksExtra||0);
+  var wTva = wHT * (+p.worksTvaPct||0)/100;
+  var wTTC = wHT + wTva;
+
+  // --- total & finance
+  var total = acq + wTTC + (+p.holdingCosts||0);
+  var equity = total * (+p.equityPct||0)/100;
+  var debt = total - equity;
+  var buildFin = debt * (+p.ratePct||0)/100 * (+p.months||0)/12 * (+p.drawPct||0)/100;
+  var invested = total + buildFin;
+
+  // --- exit A: sell
+  var grossSale = (+p.exitPsm||0) * A;
+  var saleNet = grossSale * (1 - (+p.sellCostPct||0)/100) - (+p.sellFixed||0);
+
+  var tvaOut = 0, tvaIn = 0;
+  if(p.tvaMode === "marge"){
+    tvaOut = Math.max(0, grossSale - acq) * 0.20/1.20;
+  } else if(p.tvaMode === "full"){
+    tvaOut = grossSale * 0.20/1.20;
+    tvaIn = wTva;
+  }
+  var proceeds = saleNet - tvaOut + tvaIn;
+  var profitPre = proceeds - invested;
+
+  // --- tax on the gain
+  var tax = 0, taxLabel = "no tax modelled";
+  if(profitPre > 0){
+    if(p.regime === "mdb"){
+      tax = 0.15*Math.min(profitPre,42500) + 0.25*Math.max(0, profitPre-42500);
+      taxLabel = "IS 15 % / 25 %";
+    } else if(p.regime === "private"){
+      var y = Math.max(0, +p.ownYears||0);
+      var abIR = y<6 ? 0 : (y>=22 ? 1 : Math.min(1, 0.06*(y-5)));
+      var abPS;
+      if(y<6) abPS = 0;
+      else if(y<=21) abPS = 0.0165*(y-5);
+      else if(y===22) abPS = 0.0165*16 + 0.016;
+      else if(y<30) abPS = Math.min(1, 0.0165*16 + 0.016 + 0.09*(y-22));
+      else abPS = 1;
+      var baseIR = profitPre*(1-abIR);
+      var taxIR = baseIR * 0.19;
+      var taxPS = profitPre*(1-abPS) * 0.172;
+      var st = 0;
+      if(baseIR > 250000) st = 0.06; else if(baseIR > 200000) st = 0.05;
+      else if(baseIR > 150000) st = 0.04; else if(baseIR > 100000) st = 0.03;
+      else if(baseIR > 50000) st = 0.02;
+      tax = taxIR + taxPS + baseIR*st;
+      taxLabel = "IR 19 % + PS 17,2 %" + (st? " + surtaxe " + (st*100) + " %" : "");
+    }
+  }
+  var profitNet = profitPre - tax;
+  var margin = invested>0 ? profitNet/invested : 0;
+  var em = equity>0 ? (equity + profitNet)/equity : 0;
+  var years = Math.max(0.25, ((+p.months||0) + (+p.monthsToSell||0))/12);
+  var annual = em>0 ? Math.pow(em, 1/years) - 1 : -1;
+
+  // --- exit B: hold
+  var rentMo = (p.units||[]).reduce(function(s,u){ return s + (+u.a||0)*(+u.r||0); }, 0);
+  var grossRent = rentMo*12;
+  var noi = grossRent * (1-(+p.vacPct||0)/100) * (1-(+p.opexPct||0)/100);
+  var i = (+p.ratePct||0)/100/12, n = Math.max(1,(+p.termYears||20))*12;
+  var pmt = i===0 ? debt/n : debt*i/(1-Math.pow(1+i,-n));
+  var ads = pmt*12;
+  var dscr = ads>0 ? noi/ads : 0;
+  var unitArea = (p.units||[]).reduce(function(s,u){ return s + (+u.a||0); }, 0);
+
+  return {
+    S:S, A:A, netVendor:netVendor, dmto:dmto, notary:notary, acq:acq,
+    wBase:wBase, wCont:wCont, wSoft:wSoft, wHT:wHT, wTva:wTva, wTTC:wTTC,
+    total:total, equity:equity, debt:debt, buildFin:buildFin, invested:invested,
+    grossSale:grossSale, saleNet:saleNet, tvaOut:tvaOut, tvaIn:tvaIn, proceeds:proceeds,
+    profitPre:profitPre, tax:tax, taxLabel:taxLabel, profitNet:profitNet,
+    margin:margin, em:em, annual:annual, years:years,
+    grossRent:grossRent, noi:noi, ads:ads, dscr:dscr,
+    gy:total>0?grossRent/total:0, ny:total>0?noi/total:0,
+    coc:equity>0?(noi-ads)/equity:0, cf:noi-ads, unitArea:unitArea
+  };
+}
+
+function withVal(p,k,v){ var q = clone(p); q[k] = v; return q; }
+
+function breakeven(p, key, lo, hi, wantHigh){
+  // returns the value of p[key] at which profitNet crosses zero
+  for(var k=0;k<60;k++){
+    var mid = (lo+hi)/2;
+    var ok = calc(withVal(p,key,mid)).profitNet > 0;
+    if(wantHigh){ if(ok) hi = mid; else lo = mid; }
+    else { if(ok) lo = mid; else hi = mid; }
+  }
+  return wantHigh ? hi : lo;
+}
+function stressed(p){
+  var q = clone(p);
+  q.renoPsm = (+p.renoPsm||0) * (1 + (+p.stressReno||0)/100);
+  q.exitPsm = (+p.exitPsm||0) * (1 - (+p.stressExit||0)/100);
+  q.ratePct = (+p.ratePct||0) + (+p.stressRate||0);
+  return calc(q);
+}
+function verdict(p){
+  var r = calc(p), s = stressed(p);
+  var h = (+p.hurdleMargin||0)/100;
+  if(r.margin >= h && s.margin >= 0) return {k:"go", w:"INVEST", r:r, s:s,
+    t:"Clears the "+(+p.hurdleMargin)+" % margin hurdle and still turns a profit under the stress case (works +"+(+p.stressReno)+" %, exit −"+(+p.stressExit)+" %, rate +"+(+p.stressRate)+" pt)."};
+  if(r.margin >= h) return {k:"cond", w:"CONDITIONAL", r:r, s:s,
+    t:"Clears the hurdle at the base case but goes to a loss under stress. You are underwriting the build estimate, not the property — get fixed-price tenders before you commit."};
+  if(r.profitNet > 0) return {k:"thin", w:"THIN", r:r, s:s,
+    t:"Profitable at "+pc(r.margin)+" on cost, under the "+(+p.hurdleMargin)+" % hurdle. Not enough margin to absorb an old building's surprises."};
+  return {k:"no", w:"DO NOT INVEST", r:r, s:s,
+    t:"Loses "+eur(Math.abs(r.profitNet))+" after tax at these assumptions."};
+}
+
+/* ==================== rendering: form ==================== */
+function fieldHTML(p, it){
+  var v = p[it.k];
+  var cls = "f" + (it.key?" key":"") + (it.wide?" wide":"");
+  var h = '<div class="'+cls+'">';
+  h += '<label for="f_'+it.k+'">'+esc(it.l)+(it.u?' <span class="u">'+esc(it.u)+'</span>':'')+'</label>';
+  if(it.t==="text"){
+    h += '<input type="text" id="f_'+it.k+'" data-k="'+it.k+'" value="'+esc(v)+'">';
+  } else if(it.t==="bool"){
+    h += '<input type="checkbox" id="f_'+it.k+'" data-k="'+it.k+'" data-bool="1"'+(v?" checked":"")+'>';
+  } else if(it.t==="sel"){
+    h += '<select id="f_'+it.k+'" data-k="'+it.k+'">';
+    it.opts.forEach(function(o){
+      h += '<option value="'+esc(o[0])+'"'+(String(o[0])===String(v)?" selected":"")+'>'+esc(o[1])+'</option>';
+    });
+    h += '</select>';
+  } else {
+    h += '<input type="number" id="f_'+it.k+'" data-k="'+it.k+'" value="'+esc(v)+'" step="'+(it.step||1)+'">';
+    if(it.min!==undefined && it.max!==undefined){
+      h += '<div class="sl"><input type="range" data-k="'+it.k+'" data-sync="f_'+it.k+'" min="'+it.min+'" max="'+it.max+'" step="'+(it.step||1)+'" value="'+(+v||it.min)+'" aria-label="'+esc(it.l)+' slider"></div>';
+    }
+  }
+  if(it.note) h += '<div class="note">'+it.note+'</div>';
+  h += '</div>';
+  return h;
+}
+function renderForm(){
+  var p = cur();
+  document.getElementById("form").innerHTML = FIELDS.map(function(g){
+    return '<div class="fgroup"><span class="lab">'+esc(g.g)+'</span>' +
+      g.items.map(function(it){ return fieldHTML(p, it); }).join("") + '</div>';
+  }).join("");
+}
+
+/* ==================== rendering: results ==================== */
+function renderKpis(v){
+  var p = cur(), r = v.r;
+  var be = breakeven(p,"renoPsm",0,8000,false);
+  var bx = breakeven(p,"exitPsm",200,20000,true);
+  var k = [
+    ["Total cost", eur(r.invested), ""],
+    ["Cost €/m²", eur(r.invested/r.S), ""],
+    ["Profit a/tax", eur(r.profitNet), r.profitNet>=0?"pos":"neg"],
+    ["Margin", pc(r.margin), r.margin>=(+p.hurdleMargin||0)/100?"pos":(r.margin>=0?"warn":"neg")],
+    ["Stressed", pc(v.s.margin), v.s.margin>=0?"pos":"neg"],
+    ["Break-even build", eur(be)+"/m²", ""],
+    ["Break-even exit", eur(bx)+"/m²", ""],
+    ["DSCR", isFinite(r.dscr)?r.dscr.toFixed(2)+"×":"—", r.dscr>=(+p.hurdleDscr||1.2)?"pos":(r.dscr>=1?"warn":"neg")]
+  ];
+  document.getElementById("kpis").innerHTML = k.map(function(x){
+    return '<div class="kpi"><span class="lab">'+x[0]+'</span><span class="v '+x[2]+'">'+x[1]+'</span></div>';
+  }).join("");
+}
+function renderExits(v){
+  var p = cur(), r = v.r;
+  document.getElementById("regimeLab").textContent = r.taxLabel;
+  document.getElementById("aSub").textContent =
+    "Priced on " + Math.round(r.A) + " m² Carrez at " + eur(+p.exitPsm) + "/m²";
+
+  var ap = document.getElementById("a_profit");
+  ap.textContent = eur(r.profitNet); ap.className = "big " + (r.profitNet>=0?"pos":"neg");
+  var rowsA = [
+    ["Gross sale", eur(r.grossSale), ""],
+    ["Selling costs & copro", eur(-(r.grossSale-r.saleNet)), ""],
+    ["TVA out", eur(-r.tvaOut), r.tvaOut>0?"neg":""],
+    ["Input TVA recovered", eur(r.tvaIn), r.tvaIn>0?"pos":""],
+    ["Net proceeds", eur(r.proceeds), "sum"],
+    ["Total invested", eur(-r.invested), ""],
+    ["Profit before tax", eur(r.profitPre), r.profitPre>=0?"pos":"neg"],
+    ["Tax — "+r.taxLabel, eur(-r.tax), r.tax>0?"neg":""],
+    ["Margin on cost", pc(r.margin), ""],
+    ["Equity multiple", isFinite(r.em)?r.em.toFixed(2)+"×":"—", ""],
+    ["Annualised over "+r.years.toFixed(1)+" yrs", r.em>0?pc(r.annual,0):"wipe-out", ""],
+    ["Stress case profit", eur(v.s.profitNet), v.s.profitNet>=0?"pos":"neg"]
+  ];
+  document.getElementById("aRows").innerHTML = rowsA.map(function(x){
+    return '<div class="row'+(x[2]==="sum"?" sum":"")+'"><span>'+esc(x[0])+'</span><span class="'+(x[2]==="sum"?"":x[2])+'">'+x[1]+'</span></div>';
+  }).join("");
+  var ac = document.getElementById("a_chip");
+  if(r.margin >= (+p.hurdleMargin||0)/100){ ac.className="chip chip-go"; ac.textContent="clears "+(+p.hurdleMargin)+" % hurdle"; }
+  else if(r.profitNet>0){ ac.className="chip chip-warn"; ac.textContent="below hurdle"; }
+  else { ac.className="chip chip-no"; ac.textContent="loss"; }
+
+  var bc = document.getElementById("b_cf");
+  bc.textContent = eur(r.cf); bc.className = "big " + (r.cf>=0?"pos":"neg");
+  var needPsm = r.unitArea>0
+    ? ((+p.hurdleDscr||1.2)*r.ads)/((1-(+p.vacPct||0)/100)*(1-(+p.opexPct||0)/100)*r.unitArea*12)
+    : NaN;
+  var rowsB = [
+    ["Gross rent", eur(r.grossRent), ""],
+    ["Gross yield on cost", pc(r.gy), ""],
+    ["Net operating income", eur(r.noi), ""],
+    ["Net yield on cost", pc(r.ny), ""],
+    ["Debt", eur(r.debt), ""],
+    ["Annual debt service", eur(r.ads), ""],
+    ["DSCR", isFinite(r.dscr)?r.dscr.toFixed(2)+"×":"—", r.dscr>=(+p.hurdleDscr||1.2)?"pos":(r.dscr>=1?"warn":"neg")],
+    ["Cash-on-cash", pc(r.coc), r.coc>=0?"pos":"neg"],
+    ["Rent needed for DSCR "+(+p.hurdleDscr).toFixed(2), isFinite(needPsm)?needPsm.toFixed(2)+" €/m²":"—", ""]
+  ];
+  document.getElementById("bRows").innerHTML = rowsB.map(function(x){
+    return '<div class="row"><span>'+esc(x[0])+'</span><span class="'+x[2]+'">'+x[1]+'</span></div>';
+  }).join("");
+  var bch = document.getElementById("b_chip");
+  if(r.dscr >= (+p.hurdleDscr||1.2)){ bch.className="chip chip-go"; bch.textContent="bankable"; }
+  else if(r.dscr >= 1){ bch.className="chip chip-warn"; bch.textContent="thin cover"; }
+  else { bch.className="chip chip-no"; bch.textContent="cannot service debt"; }
+}
+
+/* ==================== chart: sensitivity ==================== */
+function driverRange(p, key){
+  var d = DRIVERS.filter(function(x){return x[0]===key;})[0];
+  if(d && d[2]) return d[2].slice();
+  var v = +p[key]||1;
+  return [Math.max(0, v*0.5), v*1.6];
+}
+function drawSens(){
+  var p = cur(), key = state.driver;
+  var svg = document.getElementById("sens");
+  var W=880, H=320, mL=78, mR=24, mT=18, mB=52, iw=W-mL-mR, ih=H-mT-mB;
+  var rg = driverRange(p, key), xLo = rg[0], xHi = rg[1];
+  if(!(xHi>xLo)){ xHi = xLo + 1; }
+  var pts=[], n=80;
+  for(var q=0;q<=n;q++){
+    var x = xLo + (xHi-xLo)*q/n;
+    pts.push([x, calc(withVal(p,key,x)).profitNet]);
+  }
+  var ys = pts.map(function(a){return a[1];});
+  var rawMax = Math.max.apply(null, ys), rawMin = Math.min.apply(null, ys);
+  if(rawMin>0) rawMin = 0; if(rawMax<0) rawMax = 0;
+  var span = (rawMax-rawMin) || 1000;
+  var mag = Math.pow(10, Math.floor(Math.log10(span/5)));
+  var step = [1,2,2.5,5,10].map(function(m){return m*mag;}).filter(function(s){return span/s<=7;})[0] || mag*10;
+  var yMin = Math.floor(rawMin/step)*step, yMax = Math.ceil(rawMax/step)*step;
+  if(yMax===yMin) yMax = yMin+step;
+  var X=function(v){return mL+(v-xLo)/(xHi-xLo)*iw;};
+  var Y=function(v){return mT+(yMax-v)/(yMax-yMin)*ih;};
+  var zY = Y(0);
+  var dName = (DRIVERS.filter(function(x){return x[0]===key;})[0]||["","value"])[1];
+  var cv = +p[key]||0;
+  var curP = calc(p).profitNet;
+
+  var g = ['<title id="sens-t">Profit after tax against '+esc(dName)+'</title>'];
+  g.push('<defs><clipPath id="cU"><rect x="'+mL+'" y="'+mT+'" width="'+iw+'" height="'+Math.max(0,zY-mT).toFixed(1)+'"/></clipPath>'+
+          '<clipPath id="cD"><rect x="'+mL+'" y="'+zY.toFixed(1)+'" width="'+iw+'" height="'+Math.max(0,mT+ih-zY).toFixed(1)+'"/></clipPath></defs>');
+
+  for(var v=yMin; v<=yMax+1e-6; v+=step){
+    var y=Y(v), z=Math.abs(v)<step*1e-6;
+    if(!z) g.push('<line x1="'+mL+'" y1="'+y.toFixed(1)+'" x2="'+(mL+iw)+'" y2="'+y.toFixed(1)+'" stroke="var(--grid)" stroke-width="1"/>');
+    g.push('<text x="'+(mL-10)+'" y="'+(y+3.5).toFixed(1)+'" text-anchor="end" fill="'+(z?"var(--ink-2)":"var(--ink-3)")+'" font-family="IBM Plex Mono, monospace" font-size="10.5"'+(z?' font-weight="600"':'')+'>'+
+      (z?"0":(v>0?"":"−")+Math.round(Math.abs(v)/1000)+"k")+'</text>');
+  }
+  g.push('<line x1="'+mL+'" y1="'+zY.toFixed(1)+'" x2="'+(mL+iw)+'" y2="'+zY.toFixed(1)+'" stroke="var(--ink-2)" stroke-width="1.5"/>');
+
+  for(var t=0;t<=6;t++){
+    var xv = xLo + (xHi-xLo)*t/6, xp = X(xv);
+    g.push('<line x1="'+xp.toFixed(1)+'" y1="'+(mT+ih)+'" x2="'+xp.toFixed(1)+'" y2="'+(mT+ih+5)+'" stroke="var(--rule)" stroke-width="1"/>');
+    var lbl = xv>=10000 ? Math.round(xv/1000)+"k" : (xv>=100 ? Math.round(xv) : xv.toFixed(1));
+    g.push('<text x="'+xp.toFixed(1)+'" y="'+(mT+ih+19)+'" text-anchor="middle" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace" font-size="10.5">'+lbl+'</text>');
+  }
+  g.push('<text x="'+(mL+iw/2)+'" y="'+(H-8)+'" text-anchor="middle" fill="var(--ink-2)" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.1">'+esc(dName.toUpperCase())+'</text>');
+  g.push('<text x="14" y="'+(mT+12)+'" fill="var(--ink-2)" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.1" transform="rotate(-90 14 '+(mT+12)+')" text-anchor="end">PROFIT AFTER TAX €</text>');
+
+  var dLine = pts.map(function(a,i){return (i?"L":"M")+X(a[0]).toFixed(1)+" "+Y(a[1]).toFixed(1);}).join(" ");
+  var dArea = dLine+" L "+X(xHi).toFixed(1)+" "+zY.toFixed(1)+" L "+X(xLo).toFixed(1)+" "+zY.toFixed(1)+" Z";
+  g.push('<path d="'+dArea+'" fill="var(--blue-tint)" clip-path="url(#cU)"/>');
+  g.push('<path d="'+dArea+'" fill="var(--red-tint)" clip-path="url(#cD)"/>');
+  g.push('<path d="'+dLine+'" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linejoin="round"/>');
+
+  // zero crossing
+  for(var q2=1;q2<pts.length;q2++){
+    if((pts[q2-1][1]>0) !== (pts[q2][1]>0)){
+      var x0=pts[q2-1][0], x1=pts[q2][0], y0=pts[q2-1][1], y1=pts[q2][1];
+      var xc = x0 + (x1-x0)*(0-y0)/(y1-y0);
+      g.push('<line x1="'+X(xc).toFixed(1)+'" y1="'+mT+'" x2="'+X(xc).toFixed(1)+'" y2="'+(mT+ih)+'" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 4"/>');
+      g.push('<circle cx="'+X(xc).toFixed(1)+'" cy="'+zY.toFixed(1)+'" r="4.5" fill="var(--sheet)" stroke="var(--ink)" stroke-width="2"/>');
+      var side = X(xc) > mL+iw-160;
+      g.push('<text x="'+(X(xc)+(side?-12:12)).toFixed(1)+'" y="'+(zY-13).toFixed(1)+'" text-anchor="'+(side?"end":"start")+'" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="600">breakeven '+eur0(xc)+'</text>');
+      break;
+    }
+  }
+  // current marker
+  if(cv>=xLo && cv<=xHi){
+    g.push('<line x1="'+X(cv).toFixed(1)+'" y1="'+Y(curP).toFixed(1)+'" x2="'+X(cv).toFixed(1)+'" y2="'+zY.toFixed(1)+'" stroke="var(--amber)" stroke-width="1.5"/>');
+    g.push('<circle cx="'+X(cv).toFixed(1)+'" cy="'+Y(curP).toFixed(1)+'" r="6" fill="var(--amber)" stroke="var(--sheet)" stroke-width="2"/>');
+    var s2 = X(cv) > mL+iw-130;
+    g.push('<text x="'+(X(cv)+(s2?-14:14)).toFixed(1)+'" y="'+(Y(curP)+4).toFixed(1)+'" text-anchor="'+(s2?"end":"start")+'" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="12.5" font-weight="600">'+eur(curP)+'</text>');
+  }
+  g.push('<rect id="sens-hit" x="'+mL+'" y="'+mT+'" width="'+iw+'" height="'+ih+'" fill="transparent" style="cursor:crosshair"/>');
+  g.push('<line id="sens-cross" x1="0" y1="'+mT+'" x2="0" y2="'+(mT+ih)+'" stroke="var(--ink-3)" stroke-width="1" opacity="0"/>');
+  svg.innerHTML = g.join("");
+
+  document.getElementById("sens-legend").innerHTML =
+    '<span><span class="swatch" style="background:var(--blue)"></span>Profit after tax</span>'+
+    '<span><span class="swatch" style="background:var(--amber)"></span>Current value: '+eur0(cv)+'</span>'+
+    '<span><span class="swatch" style="background:var(--red-tint); border:1px solid var(--red)"></span>Loss</span>';
+
+  var hit = document.getElementById("sens-hit"), cross = document.getElementById("sens-cross");
+  var tt = document.getElementById("sens-tt"), box = document.getElementById("sensbox");
+  hit.addEventListener("mousemove", function(ev){
+    var rc = svg.getBoundingClientRect();
+    var px = (ev.clientX - rc.left)/rc.width*W;
+    var vv = Math.max(xLo, Math.min(xHi, xLo + (px-mL)/iw*(xHi-xLo)));
+    var rr = calc(withVal(p,key,vv));
+    cross.setAttribute("x1", X(vv).toFixed(1)); cross.setAttribute("x2", X(vv).toFixed(1));
+    cross.setAttribute("opacity","1");
+    tt.innerHTML = '<div class="tt-h">'+esc(dName)+": "+eur0(vv)+'</div>'+
+      '<div class="tt-r"><span>Total cost</span><b>'+eur(rr.invested)+'</b></div>'+
+      '<div class="tt-r"><span>Profit a/tax</span><b class="'+(rr.profitNet>=0?"pos":"neg")+'">'+eur(rr.profitNet)+'</b></div>'+
+      '<div class="tt-r"><span>Margin</span><b>'+pc(rr.margin)+'</b></div>';
+    var bx = box.getBoundingClientRect();
+    var lx = ev.clientX - bx.left + 14;
+    if(lx > bx.width - 180) lx = ev.clientX - bx.left - 180;
+    tt.style.left = Math.max(0,lx)+"px";
+    tt.style.top = Math.max(0, ev.clientY - bx.top - 20)+"px";
+    tt.style.opacity = "1";
+  });
+  hit.addEventListener("mouseleave", function(){ tt.style.opacity="0"; cross.setAttribute("opacity","0"); });
+}
+
+/* ==================== chart: sources & uses ==================== */
+function drawStack(){
+  var p = cur(), r = calc(p);
+  var segs = [
+    {k:"Acquisition + notaire", v:r.acq, c:"var(--s4)"},
+    {k:"Works HT", v:r.wHT, c:"var(--s3)"},
+    {k:"Works TVA", v:r.wTva, c:"var(--s2)"},
+    {k:"Holding + build finance", v:(+p.holdingCosts||0)+r.buildFin, c:"var(--s1)"}
+  ].filter(function(s){ return s.v > 0; });
+  var svg = document.getElementById("stack");
+  var W=880, H=232, mL=108, mR=136, mT=22, iw=W-mL-mR;
+  var maxV = Math.max(r.invested, r.proceeds, 1);
+  var sc = function(v){ return Math.max(0, v/maxV*iw); };
+  var barH=44, gap=30;
+  var g = ['<title id="stack-t">Total project cost by component against net resale proceeds</title>'];
+  var x=mL, y=mT;
+  g.push('<text x="'+(mL-12)+'" y="'+(y+barH/2+4)+'" text-anchor="end" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">USES</text>');
+  segs.forEach(function(s){
+    var w = sc(s.v);
+    g.push('<rect x="'+x.toFixed(1)+'" y="'+y+'" width="'+Math.max(0,w-2).toFixed(1)+'" height="'+barH+'" fill="'+s.c+'"/>');
+    if(w>62){
+      g.push('<text x="'+(x+7).toFixed(1)+'" y="'+(y+barH/2-2)+'" fill="var(--sheet)" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">'+Math.round(s.v/1000)+'k</text>');
+      g.push('<text x="'+(x+7).toFixed(1)+'" y="'+(y+barH/2+12)+'" fill="var(--sheet)" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".7" opacity=".85">'+Math.round(s.v/r.invested*100)+'%</text>');
+    }
+    x += w;
+  });
+  g.push('<text x="'+(mL+sc(r.invested)+9).toFixed(1)+'" y="'+(y+barH/2+4)+'" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="12.5" font-weight="600">'+eur(r.invested)+'</text>');
+
+  y = mT+barH+gap;
+  g.push('<text x="'+(mL-12)+'" y="'+(y+barH/2+4)+'" text-anchor="end" fill="var(--ink)" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">PROCEEDS</text>');
+  g.push('<rect x="'+mL+'" y="'+y+'" width="'+sc(r.proceeds).toFixed(1)+'" height="'+barH+'" fill="var(--green-tint)" stroke="var(--green)" stroke-width="1.5"/>');
+  g.push('<text x="'+(mL+7)+'" y="'+(y+barH/2+4)+'" fill="var(--green)" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600">NET OF SELLING COSTS AND TVA</text>');
+  g.push('<text x="'+(mL+sc(r.proceeds)+9).toFixed(1)+'" y="'+(y+barH/2+4)+'" fill="var(--green)" font-family="IBM Plex Mono, monospace" font-size="12.5" font-weight="600">'+eur(r.proceeds)+'</text>');
+
+  var lo=Math.min(sc(r.invested),sc(r.proceeds)), hi=Math.max(sc(r.invested),sc(r.proceeds));
+  var by = mT+2*barH+gap+28;
+  if(hi-lo>3){
+    var col = r.profitPre>=0?"var(--green)":"var(--red)";
+    g.push('<line x1="'+(mL+lo).toFixed(1)+'" y1="'+by+'" x2="'+(mL+hi).toFixed(1)+'" y2="'+by+'" stroke="'+col+'" stroke-width="1.5"/>');
+    g.push('<line x1="'+(mL+lo).toFixed(1)+'" y1="'+(by-5)+'" x2="'+(mL+lo).toFixed(1)+'" y2="'+(by+5)+'" stroke="'+col+'" stroke-width="1.5"/>');
+    g.push('<line x1="'+(mL+hi).toFixed(1)+'" y1="'+(by-5)+'" x2="'+(mL+hi).toFixed(1)+'" y2="'+(by+5)+'" stroke="'+col+'" stroke-width="1.5"/>');
+    g.push('<text x="'+(mL+(lo+hi)/2).toFixed(1)+'" y="'+(by-11)+'" text-anchor="middle" fill="'+col+'" font-family="IBM Plex Mono, monospace" font-size="11.5" font-weight="600">'+(r.profitPre>=0?"+":"")+eur(r.profitPre)+' before tax</text>');
+  }
+  svg.innerHTML = g.join("");
+  document.getElementById("stack-legend").innerHTML = segs.map(function(s){
+    return '<span><span class="swatch" style="background:'+s.c+'"></span>'+esc(s.k)+' · <span class="num">'+eur(s.v)+'</span></span>';
+  }).join("") + '<span><span class="swatch" style="background:var(--green-tint); border:1px solid var(--green)"></span>Net proceeds</span>';
+}
+
+/* ==================== units & checklist ==================== */
+function renderUnits(){
+  var p = cur();
+  var rows = (p.units||[]).map(function(u,i){
+    var mo = (+u.a||0)*(+u.r||0);
+    var flag = (+u.a||0) > 0 && (+u.a||0) < 9
+      ? '<span class="chip chip-no">&lt; 9 m²</span>' : '';
+    return '<tr>'+
+      '<td><input type="text" data-u="'+i+'" data-uk="n" value="'+esc(u.n)+'"></td>'+
+      '<td class="n"><input type="number" step="0.01" data-u="'+i+'" data-uk="a" value="'+esc(u.a)+'"></td>'+
+      '<td class="n"><input type="number" step="0.25" data-u="'+i+'" data-uk="r" value="'+esc(u.r)+'"></td>'+
+      '<td class="n">'+eur0(mo)+'</td>'+
+      '<td>'+flag+'</td>'+
+      '<td><button class="xbtn" type="button" data-udel="'+i+'" aria-label="Remove unit">×</button></td>'+
+      '</tr>';
+  }).join("");
+  document.getElementById("units").innerHTML = rows ||
+    '<tr><td colspan="6" style="color:var(--ink-3)">No units yet. Add one to drive Exit B.</td></tr>';
+  var r = calc(p);
+  var totMo = (p.units||[]).reduce(function(s,u){ return s+(+u.a||0)*(+u.r||0); },0);
+  document.getElementById("u_area").textContent = r.unitArea ? r.unitArea.toFixed(1) : "—";
+  document.getElementById("u_psm").textContent = r.unitArea ? (totMo/r.unitArea).toFixed(1) : "—";
+  document.getElementById("u_rent").textContent = eur0(totMo);
+  var diff = r.unitArea - r.S;
+  var el = document.getElementById("u_check");
+  if(!r.unitArea){ el.textContent = ""; el.className = "lab"; }
+  else if(Math.abs(diff) < 0.05*r.S){ el.innerHTML = '<span class="chip chip-go">reconciles with '+Math.round(r.S)+' m²</span>'; }
+  else { el.innerHTML = '<span class="chip chip-warn">'+(diff>0?"+":"−")+Math.abs(diff).toFixed(1)+' m² vs declared '+Math.round(r.S)+' m²</span>'; }
+}
+function renderChecks(){
+  var p = cur(), done=0, tot=0;
+  var html = CHECKS.map(function(grp){
+    return '<div class="ck-grp"><span class="lab">'+esc(grp[0])+'</span>' + grp[1].map(function(it){
+      tot++; var on = !!p.checks[it[0]]; if(on) done++;
+      return '<div class="ck'+(on?" done":"")+'">'+
+        '<input type="checkbox" id="ck_'+it[0]+'" data-ck="'+it[0]+'"'+(on?" checked":"")+'>'+
+        '<label for="ck_'+it[0]+'">'+esc(it[1])+(it[2]?'<span class="why">'+esc(it[2])+'</span>':'')+'</label>'+
+        '<span class="lab" style="text-align:right">'+(on?"done":"open")+'</span>'+
+        '</div>';
+    }).join("") + '</div>';
+  }).join("");
+  document.getElementById("checklist").innerHTML = html;
+  var pctDone = tot? done/tot : 0;
+  document.getElementById("ckbar").style.width = (pctDone*100).toFixed(0)+"%";
+  document.getElementById("ckpct").textContent = done+" / "+tot;
+}
+
+/* ==================== portfolio & compare ==================== */
+function renderList(){
+  document.getElementById("pcount").textContent = state.props.length + (state.props.length===1?" item":" items");
+  document.getElementById("plist").innerHTML = state.props.map(function(p){
+    var v = verdict(p);
+    var chip = v.k==="go"?"chip-go":(v.k==="no"?"chip-no":"chip-warn");
+    return '<button class="pitem" type="button" data-pid="'+p.id+'" aria-current="'+(p.id===state.cur)+'">'+
+      '<span><span class="pn">'+esc(p.name||"Untitled")+'</span>'+
+      '<span class="ps">'+esc(p.address||("—"))+'</span></span>'+
+      '<span class="chip '+chip+'">'+pc(v.r.margin,0)+'</span></button>';
+  }).join("");
+}
+function renderCompare(){
+  document.getElementById("cmpb").innerHTML = state.props.map(function(p){
+    var v = verdict(p), r = v.r;
+    var be = breakeven(p,"renoPsm",0,8000,false);
+    var ckTot = CHECKS.reduce(function(s,g){return s+g[1].length;},0);
+    var ckDone = Object.keys(p.checks||{}).filter(function(k){return p.checks[k];}).length;
+    var chip = v.k==="go"?"chip-go":(v.k==="no"?"chip-no":"chip-warn");
+    return '<tr class="'+(p.id===state.cur?"cmp-cur":"")+'" data-pid="'+p.id+'" style="cursor:pointer">'+
+      '<td>'+esc(p.name||"Untitled")+'</td>'+
+      '<td class="n">'+Math.round(r.S)+'</td>'+
+      '<td class="n">'+eur0(+p.priceAllIn)+'</td>'+
+      '<td class="n">'+eur0(r.invested/r.S)+'</td>'+
+      '<td class="n">'+eur0(+p.exitPsm)+'</td>'+
+      '<td class="n '+(r.profitNet>=0?"pos":"neg")+'">'+eur0(r.profitNet)+'</td>'+
+      '<td class="n">'+pc(r.margin,0)+'</td>'+
+      '<td class="n">'+eur0(be)+'</td>'+
+      '<td class="n '+(v.s.margin>=0?"pos":"neg")+'">'+pc(v.s.margin,0)+'</td>'+
+      '<td class="n">'+pc(r.ny,1)+'</td>'+
+      '<td class="n '+(r.dscr>=1.2?"pos":(r.dscr>=1?"warn":"neg"))+'">'+(isFinite(r.dscr)?r.dscr.toFixed(2):"—")+'</td>'+
+      '<td class="n">'+ckDone+"/"+ckTot+'</td>'+
+      '<td><span class="chip '+chip+'">'+v.w+'</span></td></tr>';
+  }).join("");
+}
+
+/* ==================== render all ==================== */
+function render(){
+  var v = verdict(cur());
+  var vf = document.getElementById("vflag");
+  vf.className = "vflag " + (v.k==="go"?"v-go":(v.k==="no"?"v-no":"v-cond"));
+  vf.textContent = v.w;
+  document.getElementById("vtext").textContent = v.t;
+  renderKpis(v); renderExits(v); drawSens(); drawStack(); renderUnits(); renderChecks(); renderList();
+  if(state.view==="compare") renderCompare();
+  save();
+}
+function renderAll(){ renderForm(); fillDriver(); render(); }
+function fillDriver(){
+  var sel = document.getElementById("driver");
+  sel.innerHTML = DRIVERS.map(function(d){
+    return '<option value="'+d[0]+'"'+(d[0]===state.driver?" selected":"")+'>'+esc(d[1])+'</option>';
+  }).join("");
+}
+
+/* ==================== events ==================== */
+document.getElementById("form").addEventListener("input", function(ev){
+  var el = ev.target, k = el.getAttribute("data-k");
+  if(!k) return;
+  var p = cur();
+  if(el.getAttribute("data-bool")) p[k] = el.checked;
+  else if(el.type==="number" || el.type==="range") p[k] = el.value===""?0:parseFloat(el.value);
+  else p[k] = el.value;
+  var syncId = el.getAttribute("data-sync");
+  if(syncId){ var t=document.getElementById(syncId); if(t) t.value = el.value; }
+  else if(el.type==="number"){
+    var rg = document.querySelector('input[type=range][data-sync="f_'+k+'"]');
+    if(rg) rg.value = el.value;
+  }
+  render();
+});
+document.getElementById("driver").addEventListener("change", function(ev){
+  state.driver = ev.target.value; render();
+});
+document.getElementById("units").addEventListener("input", function(ev){
+  var el = ev.target, i = el.getAttribute("data-u");
+  if(i===null) return;
+  var p = cur(), uk = el.getAttribute("data-uk");
+  p.units[+i][uk] = uk==="n" ? el.value : (el.value===""?0:parseFloat(el.value));
+  var r = calc(p);
+  document.getElementById("u_rent").textContent = eur0((p.units||[]).reduce(function(s,u){return s+(+u.a||0)*(+u.r||0);},0));
+  document.getElementById("u_area").textContent = r.unitArea.toFixed(1);
+  var vv = verdict(p); renderKpis(vv); renderExits(vv); drawSens(); renderList(); save();
+});
+document.getElementById("units").addEventListener("click", function(ev){
+  var d = ev.target.getAttribute && ev.target.getAttribute("data-udel");
+  if(d===null || d===undefined) return;
+  cur().units.splice(+d,1); render(); renderUnits();
+});
+document.getElementById("bAddUnit").addEventListener("click", function(){
+  cur().units.push({n:"Unit "+(cur().units.length+1), a:0, r:15}); render();
+});
+document.getElementById("checklist").addEventListener("change", function(ev){
+  var id = ev.target.getAttribute("data-ck");
+  if(!id) return;
+  cur().checks[id] = ev.target.checked ? 1 : 0;
+  renderChecks(); renderList(); save();
+});
+document.getElementById("plist").addEventListener("click", function(ev){
+  var b = ev.target.closest ? ev.target.closest("[data-pid]") : null;
+  if(!b) return;
+  state.cur = b.getAttribute("data-pid"); renderAll();
+});
+document.getElementById("cmpb").addEventListener("click", function(ev){
+  var tr = ev.target.closest ? ev.target.closest("[data-pid]") : null;
+  if(!tr) return;
+  state.cur = tr.getAttribute("data-pid");
+  setView("sheet"); renderAll();
+});
+
+function setView(v){
+  state.view = v;
+  document.getElementById("viewSheet").classList.toggle("hide", v!=="sheet");
+  document.getElementById("viewCompare").classList.toggle("hide", v!=="compare");
+  document.getElementById("tabSheet").setAttribute("aria-pressed", v==="sheet");
+  document.getElementById("tabCompare").setAttribute("aria-pressed", v==="compare");
+  if(v==="compare") renderCompare();
+  save();
+}
+document.getElementById("tabSheet").addEventListener("click", function(){ setView("sheet"); });
+document.getElementById("tabCompare").addEventListener("click", function(){ setView("compare"); });
+
+document.getElementById("bNew").addEventListener("click", function(){
+  var p = blank(); state.props.push(p); state.cur = p.id; setView("sheet"); renderAll();
+});
+document.getElementById("bDup").addEventListener("click", function(){
+  var p = clone(cur()); p.id = uid(); p.name = cur().name + " (copy)";
+  state.props.push(p); state.cur = p.id; renderAll();
+});
+document.getElementById("bDel").addEventListener("click", function(){
+  if(state.props.length<2){ alert("Keep at least one property. Add another first."); return; }
+  if(!confirm("Delete “"+cur().name+"”? This cannot be undone.")) return;
+  state.props = state.props.filter(function(x){return x.id!==state.cur;});
+  state.cur = state.props[0].id; renderAll();
+});
+document.getElementById("bSeed").addEventListener("click", function(){
+  var p = nantes(); state.props.push(p); state.cur = p.id; setView("sheet"); renderAll();
+});
+document.getElementById("bWipe").addEventListener("click", function(){
+  if(!confirm("Clear every saved property in this browser?")) return;
+  try{ localStorage.removeItem(LS); }catch(e){}
+  var p = nantes(); state = {props:[p], cur:p.id, driver:"renoPsm", view:"sheet"};
+  setView("sheet"); renderAll();
+});
+document.getElementById("bTheme").addEventListener("click", function(){
+  var r = document.documentElement;
+  var now = r.getAttribute("data-theme");
+  var dark = now ? now==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  r.setAttribute("data-theme", dark ? "light" : "dark");
+  try{ localStorage.setItem(LS+".theme", r.getAttribute("data-theme")); }catch(e){}
+  drawSens(); drawStack();
+});
+
+function download(name, text, mime){
+  var b = new Blob([text], {type: mime||"application/json"});
+  var u = URL.createObjectURL(b), a = document.createElement("a");
+  a.href = u; a.download = name; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); setTimeout(function(){ URL.revokeObjectURL(u); }, 1000);
+}
+document.getElementById("bExport").addEventListener("click", function(){
+  download("reappraise-"+new Date().toISOString().slice(0,10)+".json", JSON.stringify(state,null,2));
+});
+document.getElementById("bImport").addEventListener("click", function(){ document.getElementById("fileIn").click(); });
+document.getElementById("fileIn").addEventListener("change", function(ev){
+  var f = ev.target.files && ev.target.files[0];
+  if(!f) return;
+  var rd = new FileReader();
+  rd.onload = function(){
+    try{
+      var s = JSON.parse(rd.result);
+      if(!s || !s.props || !s.props.length) throw new Error("no properties in that file");
+      s.props.forEach(function(p){ if(!p.id) p.id = uid(); if(!p.checks) p.checks = {}; if(!p.units) p.units = []; });
+      state = s; if(!cur()) state.cur = state.props[0].id;
+      setView(state.view==="compare"?"compare":"sheet"); renderAll();
+    }catch(e){ alert("Could not read that file: "+e.message); }
+  };
+  rd.readAsText(f);
+  ev.target.value = "";
+});
+document.getElementById("bCsv").addEventListener("click", function(){
+  var hdr = ["Name","Address","Surface m2","Carrez m2","Price all-in","Total cost","Cost per m2",
+    "Exit per m2","Net proceeds","Profit pre-tax","Tax","Profit after tax","Margin on cost",
+    "Equity","Equity multiple","Breakeven build per m2","Stressed margin","Gross rent","NOI",
+    "Net yield","Debt service","DSCR","Checklist done","Checklist total","Verdict"];
+  var lines = [hdr.join(",")];
+  state.props.forEach(function(p){
+    var v = verdict(p), r = v.r;
+    var ckTot = CHECKS.reduce(function(s,g){return s+g[1].length;},0);
+    var ckDone = Object.keys(p.checks||{}).filter(function(k){return p.checks[k];}).length;
+    var row = [p.name, p.address, r.S, r.A, +p.priceAllIn, r.invested, r.invested/r.S,
+      +p.exitPsm, r.proceeds, r.profitPre, r.tax, r.profitNet, r.margin,
+      r.equity, r.em, breakeven(p,"renoPsm",0,8000,false), v.s.margin, r.grossRent, r.noi,
+      r.ny, r.ads, r.dscr, ckDone, ckTot, v.w];
+    lines.push(row.map(function(c){
+      if(typeof c === "number") return isFinite(c) ? Math.round(c*10000)/10000 : "";
+      return '"' + String(c==null?"":c).replace(/"/g,'""') + '"';
+    }).join(","));
+  });
+  download("reappraise-"+new Date().toISOString().slice(0,10)+".csv", lines.join("\n"), "text/csv");
+});
+
+/* ==================== boot ==================== */
+try{
+  var th = localStorage.getItem(LS+".theme");
+  if(th) document.documentElement.setAttribute("data-theme", th);
+}catch(e){}
+setView(state.view==="compare"?"compare":"sheet");
+renderAll();
+window.addEventListener("resize", function(){ drawSens(); drawStack(); });
+
+})();
+</script>
+</body>
+</html>
