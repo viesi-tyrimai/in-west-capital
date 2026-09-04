@@ -1,6 +1,6 @@
-# in-west-capital
+# Reappraise
 
-**Reappraise** — a single-file appraisal sheet for French residential property. Open it, enter a deal, and it tells you
+A single-file appraisal sheet for French residential property. Open it, enter a deal, and it tells you
 whether the numbers survive — including the two things that usually decide it: how wrong the build cost
 can be before the deal dies, and what the tax regime does to the profit.
 
@@ -48,8 +48,25 @@ Open `index.html` in a browser. That is the whole installation.
 To host it: push to GitHub, then **Settings → Pages → Source: GitHub Actions**. The included workflow
 publishes it on every push to `main`.
 
-The Nantes example (a 275 m² 1850 *hôtel particulier* for division into six dwellings) loads on first
-run so you can see the shape of a filled-in sheet. Delete it or keep it as a reference.
+## The worked examples
+
+Three real listings load on first run, so the comparison table is populated before you type anything. They
+are also three different ways a deal fails or survives.
+
+**51 Rue de la Ville en Pierre, Nantes** — a 275 m² 1850 *hôtel particulier* for division into six dwellings.
+Profitable on paper, but it breaks even at a build cost inside the range a six-way division actually costs,
+and *TVA sur marge* decides the rest.
+
+**26 rue du Château, Blain** — a 220 m² immeuble with a shop and five flats, in a small town with no railway
+station. Build cost is national; the exit price is local. It returns DO NOT INVEST in every configuration,
+and the break-even build cost sits below anything that would buy the works described in the listing.
+
+**8 Rue Rayer, Ancenis-Saint-Géréon** — 160 m², a shop plus a dwelling, eighteen minutes by train from Nantes
+in a town with more jobs than residents. The one deal of the three whose answer is not already decided: it
+turns on whether the works come in under roughly 700 €/m², and the town's ORT status makes Denormandie and
+possibly ANAH works grants available.
+
+Delete them or keep them as reference points.
 
 ## What it will not do
 

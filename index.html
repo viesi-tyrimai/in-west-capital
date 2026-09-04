@@ -280,6 +280,7 @@ tr.cmp-cur td{background:var(--blue-tint)}
         <div class="card-bd" style="display:flex; flex-direction:column; gap:8px">
           <button class="btn" type="button" id="bSeed">Load Nantes example</button>
           <button class="btn" type="button" id="bSeed2">Load Blain example</button>
+          <button class="btn" type="button" id="bSeed3">Load Ancenis example</button>
           <button class="btn danger" type="button" id="bWipe">Clear all saved data</button>
           <p class="lab" style="letter-spacing:.06em; text-transform:none; line-height:1.5">
             Everything is stored in this browser only. Nothing is uploaded anywhere.
@@ -420,9 +421,11 @@ tr.cmp-cur td{background:var(--blue-tint)}
   TVA sur marge, whether your works cross the <em>immeuble neuf</em> threshold, or whether a flip gets requalified
   as BIC. Those need a notaire and a fiscaliste. Rates and thresholds are hard-coded as of September 2026 —
   check them before you rely on a number.</p>
-  <p>Two worked examples ship with the tool: a 275 m² hôtel particulier in Nantes for division into six dwellings,
-  and a 220 m² mixed-use immeuble in Blain — a small town where build cost is national but the exit price is local.
-  Both are real listings; delete them or keep them as reference points.</p>
+  <p>Three worked examples ship with the tool, all real listings. A 275 m² hôtel particulier in Nantes for division
+  into six dwellings. A 220 m² mixed-use immeuble in Blain, a small town with no station, where build cost is
+  national but the exit price is local. And a 160 m² shop-plus-dwelling in Ancenis-Saint-Géréon, eighteen minutes
+  by train from Nantes, which turns on one number: whether the works come in under about 700 €/m². Delete them or
+  keep them as reference points.</p>
   <p>MIT licensed. Single file, no dependencies, no network calls, no analytics. Your data stays in your browser.</p>
 </div>
 
@@ -601,6 +604,31 @@ function nantes(){
   p.checks = {t2:1, x1:1, x8:0};
   return p;
 }
+function ancenis(){
+  var p = blank();
+  p.id = uid();
+  p.name = "8 Rue Rayer, Ancenis";
+  p.address = "8 Rue Rayer, 44150 Ancenis-Saint-Géréon";
+  p.surface = 159.93; p.carrezArea = 159.93; p.landArea = 0; p.yearBuilt = 1900;
+  p.priceAllIn = 119150; p.agencyPct = 7.34; p.agencyOnBuyer = true;
+  p.dmtoPct = 6.32; p.notaryOtherPct = 1.68;
+  p.renoPsm = 800; p.contPct = 10; p.softPct = 8;
+  // housing works run at 10 % TVA; the 60 m² commercial third carries 20 %,
+  // so the extra 10 points on that share are carried as a lump sum
+  p.worksTvaPct = 10; p.worksExtra = 5500; p.months = 12;
+  p.equityPct = 20; p.ratePct = 3.7; p.termYears = 20;
+  // blended exit: dwelling at 2 450 €/m², shop capitalised at 9 % gross
+  p.exitPsm = 2175; p.sellCostPct = 4; p.sellFixed = 5000; p.monthsToSell = 6;
+  p.opexPct = 30; p.vacPct = 15;
+  p.regime = "mdb"; p.tvaMode = "none"; p.ownYears = 2;
+  p.units = [
+    {n:"T2", a:45, r:13},
+    {n:"T3", a:55, r:11.75},
+    {n:"Local commercial", a:60, r:12.83}
+  ];
+  p.checks = {t5:1};
+  return p;
+}
 function blain(){
   var p = blank();
   p.id = uid();
@@ -637,8 +665,8 @@ function load(){
       if(s && s.props && s.props.length) return s;
     }
   }catch(e){}
-  var a = nantes(), b = blain();
-  return {props:[a, b], cur:a.id, driver:"renoPsm", view:"sheet"};
+  var a = nantes(), b = blain(), c = ancenis();
+  return {props:[a, b, c], cur:a.id, driver:"renoPsm", view:"sheet"};
 }
 function save(){
   try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){}
@@ -1237,10 +1265,13 @@ document.getElementById("bSeed").addEventListener("click", function(){
 document.getElementById("bSeed2").addEventListener("click", function(){
   var p = blain(); state.props.push(p); state.cur = p.id; setView("sheet"); renderAll();
 });
+document.getElementById("bSeed3").addEventListener("click", function(){
+  var p = ancenis(); state.props.push(p); state.cur = p.id; setView("sheet"); renderAll();
+});
 document.getElementById("bWipe").addEventListener("click", function(){
   if(!confirm("Clear every saved property in this browser?")) return;
   try{ localStorage.removeItem(LS); }catch(e){}
-  var a = nantes(), b = blain(); state = {props:[a, b], cur:a.id, driver:"renoPsm", view:"sheet"};
+  var a = nantes(), b = blain(), c = ancenis(); state = {props:[a, b, c], cur:a.id, driver:"renoPsm", view:"sheet"};
   setView("sheet"); renderAll();
 });
 document.getElementById("bTheme").addEventListener("click", function(){
