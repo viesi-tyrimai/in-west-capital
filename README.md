@@ -78,6 +78,16 @@ visible so you know which ones are worth paying to answer.
 Rates and thresholds are hard-coded as of **September 2026**. Check them before you rely on a number:
 DMTO rates change by département and by year, and the *encadrement des loyers* map keeps moving.
 
+## The transaction map
+
+`/map/` holds an interactive map of 3 472 DVF transactions within 1.5 km of one of the worked examples,
+51 Rue de la Ville en Pierre in Nantes. Colour is €/m², size is floor area, shape separates flats from houses.
+Filters for type, area, price band and year recompute the medians as you narrow them.
+
+`map/index.html` uses OpenStreetMap tiles and needs to be served over http. `map/standalone.html` is
+self-contained — no external requests, streets traced from the transaction coordinates — and opens from a
+local file. See [map/README.md](map/README.md) for how the dataset was built.
+
 ## Licence
 
 MIT. See [LICENSE](LICENSE).

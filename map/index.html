@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DVF sandoriai · 51 Rue de la Ville en Pierre</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Barlow+Semi+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#F4F4F1;--panel:#fff;--panel2:#EBEBE6;--ink:#1A1E22;--ink2:#3F464C;--muted:#6A7278;
+  --rule:#D6D6D0;--rule2:#BBBBB3;--accent:#0F5561;--accent-soft:#DDEAEC;--subject:#B4351F;
+  --q1:#BBD5DA;--q2:#8CB8C0;--q3:#5B99A4;--q4:#2E7481;--q5:#0C4551;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:"Barlow Semi Condensed",Arial,sans-serif;font-size:15px;color:var(--ink);background:var(--paper)}
+.ui,h1,button,th{font-family:Archivo,Arial,sans-serif}
+.m{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+#top{position:fixed;inset:0 0 auto 0;height:50px;z-index:1000;background:var(--panel);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:14px;padding:0 14px}
+#top h1{font-size:15px;font-weight:700;margin:0;white-space:nowrap}
+#top .sub{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{flex:1}
+button{font-size:12px;font-weight:600;background:transparent;color:var(--ink2);border:1px solid var(--rule2);border-radius:2px;padding:5px 9px;cursor:pointer}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+#shell{position:fixed;inset:50px 0 0 0;display:flex}
+#side{width:280px;flex:none;background:var(--panel);border-right:1px solid var(--rule);overflow-y:auto;padding:14px}
+#map{flex:1;min-width:0}
+.grp{margin-bottom:15px}
+.lab{font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips button{padding:4px 8px;font-size:11.5px}
+.stats{display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:13.5px;border-top:1px solid var(--rule);padding-top:9px;margin:0}
+.stats dt{color:var(--muted)}
+.stats dd{margin:0;font-family:"IBM Plex Mono",monospace;font-size:12.5px;text-align:right}
+.lg{display:flex;flex-direction:column;gap:3px}
+.lg div{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink2)}
+.lg i{width:12px;height:12px;border-radius:50%;flex:none;border:1px solid #fff}
+.lg i.sq{border-radius:2px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.45}
+.leaflet-popup-content{font-family:"Barlow Semi Condensed",Arial,sans-serif;font-size:13.5px;margin:9px 12px;line-height:1.4}
+.leaflet-popup-content b{font-family:Archivo,Arial,sans-serif;font-size:13.5px;display:block;margin-bottom:3px}
+.leaflet-popup-content .r{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink2);display:block}
+@media (max-width:800px){#shell{flex-direction:column}#side{width:100%;max-height:42%;border-right:none;border-bottom:1px solid var(--rule)}#top .sub{display:none}}
+</style>
+</head>
+<body>
+<div id="top">
+  <h1>DVF sandoriai</h1>
+  <div class="sub">51 Rue de la Ville en Pierre · 2021–2025 · 1,5 km</div>
+  <div class="sp"></div>
+  <button id="ringsBtn" class="on" type="button">Žiedai</button>
+  <button id="fitBtn" type="button">Atstatyti</button>
+</div>
+<div id="shell">
+  <aside id="side">
+    <div class="grp"><div class="lab">Tipas</div><div class="chips" id="fType">
+      <button data-v="all" class="on" type="button">Visi</button>
+      <button data-v="butas" type="button">Butai</button>
+      <button data-v="namas" type="button">Namai</button></div></div>
+    <div class="grp"><div class="lab">Plotas, m²</div><div class="chips" id="fSurf">
+      <button data-v="all" class="on" type="button">Visi</button><button data-v="0-40" type="button">&lt;40</button>
+      <button data-v="40-60" type="button">40–60</button><button data-v="60-85" type="button">60–85</button>
+      <button data-v="85-110" type="button">85–110</button><button data-v="110-99999" type="button">110+</button></div></div>
+    <div class="grp"><div class="lab">Kaina, tūkst. €</div><div class="chips" id="fPrice">
+      <button data-v="all" class="on" type="button">Visos</button><button data-v="0-150000" type="button">&lt;150</button>
+      <button data-v="150000-250000" type="button">150–250</button><button data-v="250000-400000" type="button">250–400</button>
+      <button data-v="400000-700000" type="button">400–700</button><button data-v="700000-99999999" type="button">700+</button></div></div>
+    <div class="grp"><div class="lab">Metai</div><div class="chips" id="fYear">
+      <button data-v="2021" class="on" type="button">2021</button><button data-v="2022" class="on" type="button">2022</button>
+      <button data-v="2023" class="on" type="button">2023</button><button data-v="2024" class="on" type="button">2024</button>
+      <button data-v="2025" class="on" type="button">2025</button></div></div>
+    <div class="grp"><div class="lab">Atrinkta</div><dl class="stats" id="stats"></dl></div>
+    <div class="grp"><div class="lab">Kaina €/m²</div><div class="lg">
+      <div><i style="background:var(--q1)"></i>iki 2 500</div>
+      <div><i style="background:var(--q2)"></i>2 500 – 3 250</div>
+      <div><i style="background:var(--q3)"></i>3 250 – 4 000</div>
+      <div><i style="background:var(--q4)"></i>4 000 – 5 000</div>
+      <div><i style="background:var(--q5)"></i>daugiau kaip 5 000</div></div></div>
+    <div class="grp"><div class="lab">Forma</div><div class="lg">
+      <div><i style="background:var(--q3)"></i>butas</div>
+      <div><i class="sq" style="background:var(--q3)"></i>namas</div>
+      <div><i style="background:var(--subject)"></i>51 Rue de la Ville en Pierre</div></div></div>
+    <div class="grp"><div class="lab">Duomenys</div><p class="note">3 472 sandoriai iš neapdorotų DVF failų, komuna 44109, 2021–2025 m. Dedublikuota pagal <span class="m">id_mutation</span>, priklausiniai atskirti, palikti tik vieno objekto sandoriai. Žemėlapio pagrindas — OpenStreetMap.</p></div>
+  </aside>
+  <div id="map"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+var SUBJ=[47.224757,-1.528421];
+var map=L.map('map',{preferCanvas:true,zoomControl:true}).setView(SUBJ,15);
+var osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · duomenys: DVF / DGFiP'});
+var carto=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+  maxZoom:20, subdomains:'abcd',
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a> · duomenys: DVF / DGFiP'});
+carto.addTo(map);
+L.control.layers({'Šviesus (CARTO)':carto,'OpenStreetMap':osm},null,{position:'bottomleft'}).addTo(map);
+
+function qcol(p){return p<2500?'#BBD5DA':p<3250?'#8CB8C0':p<4000?'#5B99A4':p<5000?'#2E7481':'#0C4551';}
+function fmt(n){return Math.round(n).toLocaleString('lt-LT');}
+
+var rings=L.layerGroup().addTo(map);
+[200,400,600,800,1200].forEach(function(r){
+  L.circle(SUBJ,{radius:r,fill:false,color:'#6A7278',weight:1,opacity:.5,dashArray:'4 4',interactive:false}).addTo(rings);
+  L.marker([SUBJ[0]+r/111320,SUBJ[1]],{interactive:false,icon:L.divIcon({className:'',
+    html:'<span style="font:10px \'IBM Plex Mono\',monospace;color:#6A7278;background:rgba(255,255,255,.75);padding:0 3px">'+r+' m</span>',
+    iconSize:[46,14],iconAnchor:[-4,7]})}).addTo(rings);
+});
+L.circleMarker(SUBJ,{radius:10,color:'#B4351F',weight:2.5,fill:false}).addTo(map)
+  .bindPopup('<b>51 Rue de la Ville en Pierre</b><span class="r">Vertinamas objektas · 314 m² · sklypas 719 m²</span><span class="r">Parcelle 44109000CH0276</span>');
+L.circleMarker(SUBJ,{radius:3,color:'#B4351F',fillColor:'#B4351F',fillOpacity:1,weight:0}).addTo(map);
+
+var layer=L.layerGroup().addTo(map), ALL=[], filt={type:'all',surf:'all',price:'all',years:{2021:1,2022:1,2023:1,2024:1,2025:1}};
+
+function popup(p){
+  return '<b>'+(p.adresas||'be adreso')+'</b>'+
+    '<span class="r">'+p.data+' · '+p.plotas_m2+' m²'+(p.kambariai?' · '+p.kambariai+' kamb.':'')+' · '+p.tipas+'</span>'+
+    '<span class="r">'+fmt(p.kaina_eur)+' € · '+fmt(p.eur_m2)+' €/m²</span>'+
+    '<span class="r">'+p.atstumas_m+' m nuo objekto'+(p.priklausiniai?' · priklausinių: '+p.priklausiniai:'')+'</span>';
+}
+function radius(a){return Math.max(3,Math.min(11,3+Math.sqrt(a)*0.42));}
+
+function render(){
+  layer.clearLayers();
+  var s0=-1,s1=1e9,p0=-1,p1=1e12;
+  if(filt.surf!=='all'){var a=filt.surf.split('-');s0=+a[0];s1=+a[1];}
+  if(filt.price!=='all'){var b=filt.price.split('-');p0=+b[0];p1=+b[1];}
+  var sel=[];
+  ALL.forEach(function(f){
+    var p=f.properties;
+    if(p.tipas==='objektas')return;
+    if(filt.type!=='all'&&p.tipas!==filt.type)return;
+    if(p.plotas_m2<s0||p.plotas_m2>=s1)return;
+    if(p.kaina_eur<p0||p.kaina_eur>=p1)return;
+    if(!filt.years[p.metai])return;
+    sel.push(p);
+    var ll=[f.geometry.coordinates[1],f.geometry.coordinates[0]];
+    var opt={radius:radius(p.plotas_m2),fillColor:qcol(p.eur_m2),fillOpacity:.88,color:'#fff',weight:1};
+    var m = p.tipas==='namas'
+      ? L.rectangle(L.latLng(ll).toBounds(radius(p.plotas_m2)*2.2),{fillColor:opt.fillColor,fillOpacity:.88,color:'#fff',weight:1})
+      : L.circleMarker(ll,opt);
+    m.bindPopup(popup(p)); m.addTo(layer);
+  });
+  stats(sel);
+}
+function med(x){if(!x.length)return 0;var a=x.slice().sort(function(p,q){return p-q;});var m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2;}
+function stats(sel){
+  var el=document.getElementById('stats');
+  if(!sel.length){el.innerHTML='<dt>Sandorių</dt><dd>0</dd>';return;}
+  el.innerHTML='<dt>Sandorių</dt><dd><b>'+fmt(sel.length)+'</b></dd>'+
+   '<dt>Mediana €/m²</dt><dd><b>'+fmt(med(sel.map(function(p){return p.eur_m2;})))+'</b></dd>'+
+   '<dt>Mediana plotas</dt><dd>'+fmt(med(sel.map(function(p){return p.plotas_m2;})))+' m²</dd>'+
+   '<dt>Mediana kaina</dt><dd>'+fmt(med(sel.map(function(p){return p.kaina_eur;})))+' €</dd>'+
+   '<dt>Mediana atstumas</dt><dd>'+fmt(med(sel.map(function(p){return p.atstumas_m;})))+' m</dd>';
+}
+function wire(id,key){
+  document.getElementById(id).addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    this.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on'); filt[key]=b.dataset.v; render();
+  });
+}
+wire('fType','type');wire('fSurf','surf');wire('fPrice','price');
+document.getElementById('fYear').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b)return;
+  var y=+b.dataset.v; filt.years[y]=filt.years[y]?0:1; b.classList.toggle('on',!!filt.years[y]); render();
+});
+document.getElementById('ringsBtn').addEventListener('click',function(){
+  if(map.hasLayer(rings)){map.removeLayer(rings);this.classList.remove('on');}
+  else{rings.addTo(map);this.classList.add('on');}
+});
+document.getElementById('fitBtn').addEventListener('click',function(){map.setView(SUBJ,15);});
+
+fetch('dvf_sandoriai.geojson').then(function(r){
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
+}).then(function(gj){
+  ALL=gj.features; render();
+}).catch(function(err){
+  document.getElementById('stats').innerHTML='<dt>Klaida</dt><dd>'+err.message+'</dd>';
+  var w=document.createElement('p');w.className='note';
+  w.style.cssText='padding:12px;color:#B4351F';
+  w.textContent='Nepavyko įkelti dvf_sandoriai.geojson. Failas turi būti tame pačiame kataloge kaip šis HTML, o puslapis atidarytas per http (pvz. GitHub Pages arba python3 -m http.server), ne file://.';
+  document.getElementById('side').prepend(w);
+});
+</script>
+</body>
+</html>
