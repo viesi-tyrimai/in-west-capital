@@ -84,9 +84,10 @@ DMTO rates change by département and by year, and the *encadrement des loyers* 
 51 Rue de la Ville en Pierre in Nantes. Colour is €/m², size is floor area, shape separates flats from houses.
 Filters for type, area, price band and year recompute the medians as you narrow them.
 
-`map/index.html` uses OpenStreetMap tiles and needs to be served over http. `map/standalone.html` is
-self-contained — no external requests, streets traced from the transaction coordinates — and opens from a
-local file. See [map/README.md](map/README.md) for how the dataset was built.
+`map/app.html?c=<slug>` uses OpenStreetMap tiles and needs to be served over http.
+`map/standalone-nantes.html` is self-contained — no external requests, streets traced from the transaction
+coordinates — and opens from a local file. `tools/build_dvf_map.py` turns any commune's raw geo-DVF files
+into a new dataset in one command. See [map/README.md](map/README.md) for the selection funnel and licences.
 
 ## Licence
 
