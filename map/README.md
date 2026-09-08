@@ -3,7 +3,7 @@
 | File | What it is | Needs a server? |
 |---|---|---|
 | `index.html` | landing page listing the available maps | no |
-| `app.html?c=<slug>` | the map, over OpenStreetMap / CARTO tiles | **yes** — it fetches `data/<slug>.geojson` |
+| `app.html?c=<slug>` | the map, over OpenStreetMap tiles | **yes** — it fetches `data/<slug>.geojson` |
 | `standalone-nantes.html` | Nantes only, fully self-contained, streets traced from the transaction coordinates | no — opens from `file://` |
 | `data/<slug>.geojson` · `.csv` | one dataset per subject property | — |
 
@@ -65,6 +65,18 @@ the map is representative even though it is not complete.
 - **Rings** — 200, 400, 600, 800 and 1 200 m; suppressed in whole-commune mode, where the dashed
   commune boundary replaces them
 
+## Basemaps
+
+`app.html` offers three keyless tile layers, switchable bottom-left:
+
+- **OpenStreetMap** (default) — `tile.openstreetmap.org`, zoom ≤ 19
+- **OSM France** — `tile.openstreetmap.fr/osmfr`, zoom ≤ 20, better French street labelling
+- **Šviesus (Esri)** — Esri World Light Gray Canvas, zoom ≤ 16, muted background for reading the price colours
+
+CARTO Basemaps is no longer used by default: without an API key every tile is now stamped
+`API KEY REQUIRED · carto.com/basemaps/apikey`. If you have a free CARTO key, append it to the
+URL — `app.html?c=nantes&k=YOUR_KEY` — and a fourth layer, `Šviesus (CARTO)`, appears.
+
 ## Caveat on `standalone-nantes.html`
 
 It has no real basemap. The street lines are fitted through the transaction points of each street (principal axis, split where consecutive points are more than 180 m apart). Point positions are exact; street shapes are approximate. It is a schematic, not a cadastral plan.
@@ -72,4 +84,4 @@ It has no real basemap. The street lines are fitted through the transaction poin
 ## Licences
 
 - DVF data: **Licence Ouverte / Open Licence 2.0** (Etalab), DGFiP
-- Basemap in `app.html`: © OpenStreetMap contributors (ODbL), © CARTO
+- Basemap in `app.html`: © OpenStreetMap contributors (ODbL); optional layers © OSM France and © Esri/HERE/Garmin

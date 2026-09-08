@@ -108,12 +108,29 @@ COMMUNES.forEach(function(c){
 pick.addEventListener('change', function(){ location.search='?c='+this.value; });
 
 var map = L.map('map',{preferCanvas:true});
-var carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-  maxZoom:20, subdomains:'abcd',
-  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a> · duomenys: DVF / DGFiP, Licence Ouverte 2.0'}).addTo(map);
-var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · duomenys: DVF / DGFiP'});
-L.control.layers({'Šviesus (CARTO)':carto,'OpenStreetMap':osm},null,{position:'bottomleft'}).addTo(map);
+var DVF = ' &middot; duomenys: DVF / DGFiP, Licence Ouverte 2.0';
+var OSMA = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+// Pagrindiniai žemėlapiai be API rakto. CARTO Basemaps be rakto ant kiekvienos
+// plytelės užrašo „API KEY REQUIRED“, todėl numatytasis sluoksnis – OSM.
+var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19, attribution:OSMA+DVF}).addTo(map);
+var osmfr = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{
+  maxZoom:20, subdomains:'abc', attribution:OSMA+' / OSM France'+DVF});
+var gray = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{
+  maxZoom:16, attribution:'&copy; Esri, HERE, Garmin, OpenStreetMap contributors'+DVF});
+
+var LAYERS = {'OpenStreetMap':osm, 'OSM France':osmfr, 'Šviesus (Esri)':gray};
+
+// Neobligatoriai: savas CARTO raktas per adresą ?k=RAKTAS
+var ck = qs.get('k');
+if(ck){
+  LAYERS['Šviesus (CARTO)'] = L.tileLayer(
+    'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?api_key='+encodeURIComponent(ck),{
+    maxZoom:20, subdomains:'abcd',
+    attribution:OSMA+', &copy; <a href="https://carto.com/attributions">CARTO</a>'+DVF});
+}
+L.control.layers(LAYERS,null,{position:'bottomleft'}).addTo(map);
 map.setView([47.2247,-1.5284], 15);
 
 function qcol(p){return p<2500?'#BBD5DA':p<3250?'#8CB8C0':p<4000?'#5B99A4':p<5000?'#2E7481':'#0C4551';}
